@@ -1,84 +1,105 @@
-import React from 'react'
+import React from 'react';
 import styled from 'styled-components';
+import Section from '../component/Section';
+import Title from '../component/Title';
+import IconLg from '../images/logo_lg.png';
+import { onBoardMockData } from "../mock";
 
-import lg from '../images/logo_lg.png'
-import Next from "../images/icon_next.png";
-import Img from '../images/lgcontent_1.png'
+const StoryContainer = styled.div`
+  position: relative;
+`;
 
-const Container = styled.div`
-  margin-bottom: 10px;
-  width: 100%;
-  border-bottom: 4px solid lightgray;
-`
-
-const LogoImg=styled.img`
-  width: 25px;
-  height: 25px;
-`
-const NextImg=styled.img`
-  width: 15px;
-  height: 15px;
-  margin-top: 5px;
-  margin-left: 5px;
-`
-
-const StoryMentArea=styled.div`
-  margin-top: 10px;
-  margin-left: 10px;
-  display: flex;
-  flex-direction: row;
-`
-
-const StoryMent=styled.div`
-  font-weight: 700;
-  font-size: 20px;
-  margin-left: 5px;
-`
-
-const StoryArea=styled.div`
+const Link = styled.a`
   display: flex;
   flex-direction: column;
-  padding-bottom: 2%;
-`
-const StoryImg=styled.img`
-  width: 90%;
-  height: 80%;
-  display: block;
-  margin: auto;
-  border-radius: 10px;
-  padding-top: 5px;
-`
+  @media screen and (min-width: 600px) {
+    display: flex;
+    flex-direction: row;
+  }
+`;
 
-const StoryTitle=styled.div`
-  font-size: 20px;
+const StoryImg = styled.img`
+  width: 100%;
+  height: auto; 
+`;
+
+const StoryText = styled.div`
+  position: relative;
+  @media screen and (min-width: 600px) {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+  }
+`;
+
+const StoryTitle = styled.div`
+  overflow: hidden;
+  display: -webkit-box;
+  width: 100%;
+  margin-top: 17px;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow-wrap: break-word;
+  text-overflow: ellipsis;
+  font-size: 15px;
   font-weight: bold;
-  margin-left: 20px;
-`
-const StoryDesc=styled.div`
-  margin-left: 20px;
+  @media screen and (min-width: 600px) {
+    margin-top: 0;
+  }
+`;
+
+const StoryDesc = styled.div`
+  font-size: 13px;
+  font-weight: 400;
+  margin-top: 5px;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;  /* 말줄임 적용 */
-`
+  text-overflow: ellipsis;
+  @media screen and (min-width: 600px) {
+    white-space: unset;
+  }
+`;
+
+const StoryImgDiv = styled.div`
+  @media screen and (min-width: 600px) {
+    display: flex;
+    flex: 1;
+    margin-right: 10px;
+  }
+`;
+
+const StoryThumnail = styled.div`
+  text-decoration: none;
+  overflow: hidden;
+  border-radius: 10px;
+  font-size: 0;
+`;
+
+const Api = onBoardMockData.LGcontent;
+
 function Story(){
-    return(
-        <Container>
-            <StoryMentArea>
-                <LogoImg src={lg} alt={lg}/>
-                <StoryMent>에어로타워 스토리</StoryMent>
-                <NextImg src={Next} alt={Next}/>
-            </StoryMentArea>
-            <StoryArea>
-                <StoryImg src={Img} alt={Img}/>
-                <StoryTitle>
-                    공기 질이 곧 삶의 질 없으면 후회하는 삶의 질 상승템
-                </StoryTitle>
-                <StoryDesc>
-                    공기만 달라져도 바뀌는 건강하고 청정한 일상 에어로타워로 우리 집 공기질이 달라져요. 계절에 상관없이 사계절 내내 쾌적한 공기를 더해주는 에어로타워로 일상을 업그레이드 하세요.
-                </StoryDesc>
-            </StoryArea>
-        </Container>
-    );
+  return(
+    <Section>
+      <StoryContainer>
+        <Title link={`https://m.naver.com`} iconSrc={IconLg} iconText={`LG 로고`}>
+          에어로타워 스토리
+        </Title>
+        {Api.map(({ contentId, contentUrl, thumbnail, contentTitle, contentDescription }) => (
+            <Link href={contentUrl}>
+              <StoryImgDiv key={contentId}>
+                <StoryThumnail>
+                  <StoryImg src={thumbnail} alt={'리뷰 이미지'}/>
+                </StoryThumnail>
+              </StoryImgDiv>
+              <StoryText>
+                <StoryTitle>{contentTitle}</StoryTitle>
+                <StoryDesc>{contentDescription}</StoryDesc>
+              </StoryText>
+            </Link>
+        ))}
+      </StoryContainer>
+    </Section>
+  );
 }
 
 export default Story;

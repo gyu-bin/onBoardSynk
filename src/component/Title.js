@@ -27,9 +27,6 @@ const Link = styled.a`
   &:after {
     ${TitleStyle};
   }
-  &.hidden-arrow:after {
-    display: none;
-  }
 `;
 
 const TitleBox = styled.h3`

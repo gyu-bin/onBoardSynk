@@ -12,10 +12,10 @@ const SectionBox = styled.div`
   background: #fff;
 `;
 
-const Section = ({ children, spaceTop, useSpace, ...props }) => {
+const Section = ({ children, spaceTop, ...props }) => {
   return (
     <SectionContainer>
-      <SectionBox useSpace={useSpace} {...props}>
+      <SectionBox {...props}>
         {children}
       </SectionBox>
     </SectionContainer>

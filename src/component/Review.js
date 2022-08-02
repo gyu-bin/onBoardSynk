@@ -1,174 +1,137 @@
-import React, {useState} from 'react'
-import styled from 'styled-components';
-
-import Naver from '../images/logo_naverblog.png'
-import Next from '../images/icon_next.png'
-
-import prdRev1 from '../images/productReview_1.png'
-import prdRev2 from '../images/productReview_2.png'
-import prdRev3 from '../images/productReview_3.png'
-import prdRev4 from '../images/productReview_4.png'
-import prdRev5 from '../images/productReview_5.png'
-import prdRev6 from '../images/productReview_6.png'
-import prdRev7 from '../images/productReview_7.png'
-import prdRev8 from '../images/productReview_8.png'
-import prdRev9 from '../images/productReview_9.png'
-
+import React, { useRef, useState } from 'react';
 import Slider from "react-slick";
-import "slick-carousel/slick/slick.css"
-import "slick-carousel/slick/slick-theme.css"
+import "slick-carousel/slick/slick-theme.css";
+import "slick-carousel/slick/slick.css";
+import styled from 'styled-components';
+import Section from '../component/Section';
+import Title from '../component/Title';
+import IconNaver from '../images/logo_naverblog.png';
+import prdRev6 from '../images/productReview_6.png';
+import { AppLink } from "../libs";
+import { onBoardMockData } from "../mock";
 
-const Container=styled.div`
-  margin-bottom: 10px;
-  width: 100%;
-  border-bottom: 4px solid lightgray;
-`
-
-const Img=styled.img`
-  width: 25px;
-  height: 25px;
-`
-
-const ReviewMentArea=styled.div`
-  margin-top: 10px;
-  margin-left: 10px;
-  display: flex;
-  flex-direction: row;
-`
-const ReviewMent=styled.div`
-    font-weight: 700;
-    font-size: 20px;
-    margin-left: 5px;
-  
-`
-const NextImg=styled.img`
-  width: 15px;
-  height: 15px;
-  margin-top: 5px;
-  margin-left: 5px;
-`
-
-const RevAll=styled.div`
+const RevAll = styled.div`
+  height: auto;
+  width: auto;
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px;
-`
+`;
 
-const ReviewArea=styled.div`
+const ReviewArea = styled.div`
   display: flex;
   flex-direction: row;
-  margin: 10px;
-`
+  margin-bottom: 17px;
+`;
 
-const ReviewContent=styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-left: 5px;
-`
-
-const ReviewImg=styled.img`
-  width: 90%;
-  height: 270px;
+const ReviewAreaDiv = styled.div`
+  flex-basis: 30%;
+  flex-direction: row;
   border-radius: 10px;
-`
-
-const ReviewText=styled.div`
-  font-weight: 700;
-  font-size: 15px;
-  width: 50%;
   overflow: hidden;
-  text-overflow: ellipsis;
+  margin-right: 10px;
+  aspect-ratio: 4 / 2.5;
+
+`;
+
+const ReviewContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+`;
+
+const ReviewImg = styled.img`
+  width: 100%;
+  height: auto;
+`;
+
+const ReviewText = styled.div`
+  overflow: hidden;
   display: -webkit-box;
+  width: 100%;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-`
-
-const Reviewer=styled.div`
+  overflow-wrap: break-word;
+  text-overflow: ellipsis;
+  font-weight: 700;
   font-size: 15px;
-`
-const Review=()=> {
+  line-height: 21px;
+  color: #111111;
+`;
 
-    const settings = {
-        dots: true,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-    }
+const Reviewer = styled.div`
+  overflow: hidden;
+  display: -webkit-box;
+  width: 100%;
+  margin-top: 2px;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow-wrap: break-word;
+  text-overflow: ellipsis;
+  font-size: 13px;
+  line-height: 19px;
+  font-weight: 400;
+  color: #626262;
+`;
 
-        return (
-            <Container>
-                <ReviewMentArea>
-                    <Img src={Naver} alt={Naver}/>
-                    <ReviewMent>꼼꼼 리뷰</ReviewMent>
-                    <NextImg src={Next} alt={Next}/>
-                </ReviewMentArea>
-                <RevAll>
-                    {/*1*/}
-                    <Slider {...settings}>
-                        <ReviewArea>
-                            <ReviewImg src={prdRev1} alt={prdRev1}/>
-                            <ReviewContent>
-                                <ReviewText>인테리어 가전 LG퓨리케어 에어로타워 오브제컬렉션 청정한 공간으로 만들어주는 공기청정팬</ReviewText>
-                                <Reviewer>똑소리나는우새댁</Reviewer>
-                            </ReviewContent>
-                        </ReviewArea>
+const Link = styled.a`
+  text-decoration: none;
+  justify-content: flex-start;
+  overflow: hidden;
+  display: flex;
+`;
 
-                        <ReviewArea>
-                            <ReviewImg src={prdRev2} alt={prdRev2}/>
-                            <ReviewContent>
-                                <ReviewText>공간 인테리어가전 LG 퓨리케어 에어로타워 오브제컬렉션으로 홈스타일링 완성</ReviewText>
-                                <Reviewer>핑크비쥬</Reviewer>
-                            </ReviewContent>
-                        </ReviewArea>
+const Review = () => {
+  const [mainImg, setmainImg] = useState([[{}]]);
+  const [text,onChangeText]=React.useState("");
+  const [searchQuery, setSearchQuery] = React.useState('');
+  const [isPress, setIsPress] = React.useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [Search, setSearch] = useState([{}]);
+  const onChangeSearch = query => setSearchQuery(query);
+  const [searchVal, setSearchVal] = useState("");
+  const [user, setUser] = useState(null);
 
-                        <ReviewArea>
-                            <ReviewImg src={prdRev2} alt={prdRev2}/>
-                            <ReviewContent>
-                                <ReviewText>공간 인테리어가전 LG 퓨리케어 에어로타워 오브제컬렉션으로 홈스타일링 완성</ReviewText>
-                                <Reviewer>핑크비쥬</Reviewer>
-                            </ReviewContent>
-                        </ReviewArea>
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const slideRef=useRef(null);
 
-                        <ReviewArea>
-                            <ReviewImg src={prdRev2} alt={prdRev2}/>
-                            <ReviewContent>
-                                <ReviewText>공간 인테리어가전 LG 퓨리케어 에어로타워 오브제컬렉션으로 홈스타일링 완성</ReviewText>
-                                <Reviewer>핑크비쥬</Reviewer>
-                            </ReviewContent>
-                        </ReviewArea>
-                    </Slider>
+  const settings = {
+    dots: true,
+    className: "center",
+    centerMode: true,
+    infinite: true,
+    centerPadding: "0",
+    slidesToShow: 1,
+    speed: 500,
+    rows: 3,
+    arrows: false,
+  }
+  const Api= onBoardMockData.productReview;
 
+  return (
+    <Section>
+      <Title link={`https://m.naver.com`} iconSrc={IconNaver} iconText={`네이버 로고`}>
+        꼼꼼 리뷰
+      </Title>
+      <RevAll>
+        <Slider {...settings}>
+          {Api.map(({ contentId, contentUrl, thumbnail, contentTitle, bloggerName }) => (
+            <ReviewArea key={contentId}>
+              <Link href={contentUrl}>
+                <ReviewAreaDiv>
+                  <ReviewImg src={thumbnail} alt={'리뷰 이미지'}/>
+                </ReviewAreaDiv>
+                <ReviewContent>
+                  <ReviewText>{contentTitle}</ReviewText>
+                  <Reviewer>{bloggerName}</Reviewer>
+                </ReviewContent>
+              </Link>
+            </ReviewArea>
+          ))}
+        </Slider>
 
-                    {/*2*/}
-                 {/*   <ReviewArea>
-                        <ReviewImg src={prdRev2} alt={prdRev2}/>
-                        <ReviewContent>
-                            <ReviewText>공간 인테리어가전 LG 퓨리케어 에어로타워 오브제컬렉션으로 홈스타일링 완성</ReviewText>
-                            <Reviewer>핑크비쥬</Reviewer>
-                        </ReviewContent>
-                    </ReviewArea>*/}
-
-                    {/*3*/}
-                   {/* <ReviewArea>
-                        <ReviewImg src={prdRev3} alt={prdRev3}/>
-                        <ReviewContent>
-                            <ReviewText>LG 퓨리케어 에어로타워 오브제컬렉션 사계절 청정라이프의 시작</ReviewText>
-                            <Reviewer>하율</Reviewer>
-                        </ReviewContent>
-                    </ReviewArea>*/}
-
-                    {/*3*/}
-                   {/* <ReviewArea>
-                        <ReviewImg src={prdRev3} alt={prdRev3}/>
-                        <ReviewContent>
-                            <ReviewText>LG 퓨리케어 에어로타워 오브제컬렉션 사계절 청정라이프의 시작</ReviewText>
-                            <Reviewer>하율</Reviewer>
-                        </ReviewContent>
-                    </ReviewArea>*/}
-                </RevAll>
-            </Container>
-        );
+      </RevAll>
+    </Section>
+  );
 }
 
 export default Review;

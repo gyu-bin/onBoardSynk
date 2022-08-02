@@ -1,106 +1,172 @@
-import React from 'react'
-import styled from 'styled-components';
-
-
-import Next from '../images/icon_next.png'
-import Insta from '../images/logo_instagram.png'
-
-import insta1 from '../images/instaContent_1.png'
-import insta2 from '../images/instaContent_2.png'
-import insta3 from '../images/instaContent_3.png'
-import insta4 from '../images/instaContent_4.png'
-import insta5 from '../images/instaContent_5.png'
-import insta6 from '../images/instaContent_6.png'
-import insta7 from '../images/instaContent_7.png'
-import insta8 from '../images/instaContent_8.png'
-import insta9 from '../images/instaContent_9.png'
-
+import React from 'react';
 import Slider from "react-slick";
-import "slick-carousel/slick/slick.css"
-import "slick-carousel/slick/slick-theme.css"
+import "slick-carousel/slick/slick-theme.css";
+import "slick-carousel/slick/slick.css";
+import styled from 'styled-components';
+import Section from '../component/Section';
+import Title from '../component/Title';
+import IconInsta from '../images/logo_instagram.png';
+import { AppLink } from "../libs";
+import useFetch from '../useFetch';
+import { onBoardMockData } from "../mock";
 
 
-const Container=styled.div`
-  
-`
-
-const TipLogo=styled.div`
-  margin-top: 10px;
-  margin-left: 10px;
-  display: flex;
-  flex-direction: row;
-`
-
-const Img=styled.img`
-  width: 25px;
-  height: 25px;
-`
-const TipMent=styled.div`
-  font-weight: 700;
-  font-size: 15px;
-  margin-left: 5px;
-`
-
-const NextImg=styled.img`
-  width: 15px;
-  height: 15px;
-  margin-top: 2px;
-  margin-left: 7px;
-`
-
-const TipArea=styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  justify-content: space-evenly;
-`
-const ListItems = styled.div`
-  padding : 0.5em ;
+const TipContainer = styled.div`
+  position: relative;
+  box-sizing: border-box;
+  width:100%;
 `;
 
-const TipImg=styled.img`
-  width: 112px;
-  height: 112px;
-  padding: 6px;
-`
-const Tip=()=>{
+const TipArea = styled.div`
+  font-size: 0;
+  .slick-initialized .slick-slide {
+    display: block;
+  }
 
+  .slick-slider {
+    margin-right: 10px;
+    box-sizing: border-box;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    -khtml-user-select: none;
+    -ms-touch-action: pan-y;
+    touch-action: pan-y;
+    -webkit-tap-highlight-color: transparent
+  }
+
+  .slick-list,
+  .slick-slider {
+    position: relative;
+    display: block;
+  }
+
+  .slick-list {
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+  }
+
+  .slick-slider .slick-list,
+  .slick-slider .slick-track {
+    -ms-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+
+  .slick-track {
+    position: relative;
+    top: 0;
+    left: 0;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .slick-track:after,
+  .slick-track:before {
+    display: table;
+    content: "";
+  }
+
+  .slick-track:after {
+    clear: both;
+  }
+
+  .slick-loading .slick-track {
+    visibility: hidden;
+  }
+
+  .slick-slide {
+    display: none;
+    float: left;
+    height: 100%;
+    min-height: 1px;
+  }
+
+  .slick-slide img {
+    display: block;
+  }
+
+  .slick-dots {
+    margin-top: 10px;
+  }
+`
+const SliderItem = styled.div`
+  .box {
+    color: #fff;
+    margin: 0 10px 10px 0;
+    position: relative;
+    text-align: center;
+  }
+`;
+
+const TipImg = styled.img`
+  width: 100%;
+  height: 100%;
+  justify-content: flex-start;
+  overflow: hidden;
+`;
+
+const Link = styled.a`
+  overflow: hidden;
+  text-decoration: none;
+  justify-content: flex-start;
+`;
+
+const SliderWrap = styled.div`
+  position: relative;
+  &:after {
+    content: "";
+    position: absolute;
+    display: inline-block;
+    width: 20px;
+    height: 100%;
+    top: 0;
+    right: 0;
+    background: #fff;
+  }
+`;
     const settings = {
         dots: true,
+        className: "center",
+        centerMode: true,
         infinite: true,
-        speed: 300,
+        centerPadding: "0",
         slidesToShow: 1,
-        slidesToScroll: 1
+        speed: 500,
+        rows: 3,
+        slidesPerRow: 3,
+        arrows: false,
     }
 
-    return(
-        <Container>
-            <TipLogo>
-                <Img src={Insta} alt={Insta}/>
-                <TipMent>가전인테리어 팁</TipMent>
-                <NextImg src={Next} alt={Next}/>
-            </TipLogo>
-                <TipArea>
-                    {/*<Slider {...settings}>*/}
-                        <ListItems>
-                            <TipImg src={insta1} alt={insta1}/>
-                            <TipImg src={insta2} alt={insta2}/>
-                            <TipImg src={insta3} alt={insta3}/>
-                            <TipImg src={insta4} alt={insta4}/>
-                            <TipImg src={insta5} alt={insta5}/>
-                            <TipImg src={insta6} alt={insta6}/>
-                            <TipImg src={insta7} alt={insta7}/>
-                            <TipImg src={insta8} alt={insta8}/>
-                            <TipImg src={insta9} alt={insta9}/>
-                            <TipImg src={insta1} alt={insta1}/>
-                            <TipImg src={insta2} alt={insta2}/>
-                            <TipImg src={insta3} alt={insta3}/>
-                            <TipImg src={insta4} alt={insta4}/>
-                        </ListItems>
-                    {/*</Slider>*/}
-                </TipArea>
-        </Container>
-    );
-}
+  const Api= onBoardMockData.instaContent;
+
+    function Tip(){
+      return(
+        <Section style={{ paddingRight: "0" }}>
+          <TipContainer>
+            <Title link={`https://m.naver.com`} iconSrc={IconInsta} iconText={`인스타그램 로고`} style={{ paddingRight: "20px" }}>
+              가전인테리어 팁
+            </Title>
+            <TipArea>
+              <SliderWrap>
+                <Slider {...settings}>
+                  {Api.map(({ contentId, caption, thumbnail, contentUrl, bloggerName }) => (
+                    <SliderItem key={contentId}>
+                      <div className="box">
+                        <Link href={contentUrl}><TipImg src={thumbnail} alt={caption}/></Link>
+                      </div>
+                    </SliderItem>
+                  ))}
+                </Slider>
+              </SliderWrap>
+            </TipArea>
+          </TipContainer>
+        </Section>
+      );
+    }
+
 
 export default Tip;
