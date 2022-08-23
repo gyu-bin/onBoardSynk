@@ -3,7 +3,7 @@
   margin: 0;
 }
 
-body {
+body,h1, h2, h3, h4, h5, h6, a, button, div, span, table, th, td, label, caption {
   margin: 0;
   font-family: "Noto Sans CJK KR","Noto Sans","RobotoDraft","Roboto",-apple-system,"Apple SD Gothic Neo","Helvetica Neue",sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -17,10 +17,15 @@ code {
 
 a {
   text-decoration: none;
+  background-color: transparent;
+  -webkit-tap-highlight-color : transparent;
 }
 
 a:link, a:visited, a:hover, a:active {
   color:#000;
+}
+a:active, a:hover {
+  outline: 0;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -30,4 +35,6 @@ h1, h2, h3, h4, h5, h6 {
 button {
   border: 0;
   background: none;
+  outline: none;
+  -webkit-tap-highlight-color : transparent;
 }
