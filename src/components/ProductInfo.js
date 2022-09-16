@@ -9,6 +9,8 @@ import "swiper/css";
 
 const imgTemp = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABAsAAAJXCAMAAADCeC0zAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6RjRBNjJENzgyRTY2MTFFRDkyRDJDQjI4N0VCNzI0MTMiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6RjRBNjJENzkyRTY2MTFFRDkyRDJDQjI4N0VCNzI0MTMiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpGNEE2MkQ3NjJFNjYxMUVEOTJEMkNCMjg3RUI3MjQxMyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpGNEE2MkQ3NzJFNjYxMUVEOTJEMkNCMjg3RUI3MjQxMyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PmwiqqQAAAAGUExURf///wAAAFXC034AAAABdFJOUwBA5thmAAACc0lEQVR42uzBMQEAAADCoPVPbQlPoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB4mQADAHibAAH8kTxoAAAAAElFTkSuQmCC';
 
+const imgTemp2 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANcAAADXCAMAAAC+ozSHAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6RTc1MEU0MUQyRTY2MTFFREIwMjhBMTRCMUU2NjY2QkUiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6RTc1MEU0MUUyRTY2MTFFREIwMjhBMTRCMUU2NjY2QkUiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpFNzUwRTQxQjJFNjYxMUVEQjAyOEExNEIxRTY2NjZCRSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpFNzUwRTQxQzJFNjYxMUVEQjAyOEExNEIxRTY2NjZCRSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PsL8TV4AAAAGUExURf///wAAAFXC034AAAABdFJOUwBA5thmAAAAR0lEQVR42uzBAQEAAACCIP+vbkhAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA7yaAAAMAtWgAARlggcUAAAAASUVORK5CYII='
+
 const tempData = [
   {idx:0},
   {idx:1},
@@ -41,7 +43,7 @@ const InfoContainer = styled.div`
     padding-right: 20px;
   }
   &.bg {
-    background: ${({ theme }) => theme.colorSet.list_separator_background_color}; 
+    background: ${({ theme }) => theme.colorSet.list_separator_background_color};
   }
 `;
 
@@ -150,28 +152,57 @@ const ProductInfo = ({ productData }) => {
         <Title className={productData ? "" : "title-box"} iconSrc={productData ? IconInfo : ""} iconText={`정보`}>
           {productData ? "제품 정보" : "xxxxxxxxxx"}
         </Title>
-        <InfoProduct>
-          <InfoThumnail>
-            <InfoThumnailImg src={productData.modelThumbnail} alt={productData.productName}/>
-          </InfoThumnail>
-          <InfoDesc>
-            <InfoProductName>{productData.productName}</InfoProductName>
-            <InfoModelName>{productData.modelName}</InfoModelName>
-          </InfoDesc>
-        </InfoProduct>
-        <InfoSupport>
-          <StyledButton type={`type1`} href={productData.guideUrl}>
-            <IconGuide />사용설명서
-          </StyledButton>
-          <StyledButton type={`type1`} href={productData.consumablesUrl}>
-            <IconBuy />소모품 구매
-          </StyledButton>
-        </InfoSupport>
+        {!productData && (
+          <>
+            <InfoProduct>
+              <InfoThumnail>
+                <InfoThumnailImg className="img-box" src={imgTemp2} alt="제품 이미지" />
+              </InfoThumnail>
+              <InfoDesc>
+                <InfoProductName className="text-box">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</InfoProductName>
+                <InfoModelName className="text-box">xxxxxxxxxxx</InfoModelName>
+              </InfoDesc>
+            </InfoProduct>
+            <InfoSupport>
+              <StyledButton type={`type1`} href={productData.guideUrl}>
+                <IconGuide />xxxxx
+              </StyledButton>
+              <StyledButton type={`type1`} href={productData.consumablesUrl}>
+                <IconBuy />xxxxxxx
+              </StyledButton>
+            </InfoSupport>
+          </>
+        )}
+        {productData && (
+          <>
+            <InfoProduct>
+              <InfoThumnail>
+                <InfoThumnailImg src={productData.modelThumbnail} alt={productData.productName}/>
+              </InfoThumnail>
+              <InfoDesc>
+                <InfoProductName>{productData.productName}</InfoProductName>
+                <InfoModelName>{productData.modelName}</InfoModelName>
+              </InfoDesc>
+            </InfoProduct>
+            <InfoSupport>
+              <a href={productData.guideUrl} download style={{border:"1px solid #000"}}>test</a>
+              <a href={"https://www.naver.com"} download style={{border:"1px solid #000"}}>naver</a>
+              <StyledButton type={`type1`} href={productData.guideUrl}>
+                <IconGuide />사용설명서
+              </StyledButton>
+              <StyledButton type={`type1`} href={productData.consumablesUrl}>
+                <IconBuy />소모품 구매
+              </StyledButton>
+            </InfoSupport>
+          </>
+        )}
       </InfoContainer>
       <InfoContainer className="space bg" style={{ marginTop: "20px" }}>
-        <InfoTitle>제품 설치 전 확인해주세요.</InfoTitle>
+        <InfoTitle className={productData ? "" : "title-box"}>
+          {productData ? "제품 설치 전 확인해주세요." : "xxxxxxxxxx"}
+        </InfoTitle>
         <Swiper spaceBetween={10} slidesPerView={"auto"} loop={true}>
-          {!productData && tempData.map((data, idx) => 
+          {!productData && tempData.map((data, idx) =>
             <SwiperSlide>
               <ListItems key={`product_${idx}`}>
                 <StyledButton href={""}>

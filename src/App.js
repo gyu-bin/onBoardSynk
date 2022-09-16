@@ -95,7 +95,7 @@ const getLateTime = (t1, t2) => {
 const App = () => {
   const [data, setData] = useState([]);
   const [delivery, setDelivery] = useState();
-  const [firebaseApiKey, setFirebaseApiKey] = useState('');
+  const [firebaseApiKey, setFirebaseApiKey] = useState('VGhpblEyLjAgU0VSVklDRQ==');
   const [productData, setProductData] = useState(productInfo);
   const share = useCallback(() => {
     // //deepLink
@@ -119,13 +119,14 @@ const App = () => {
     .then((res) => { 
       console.log(res);
       window.navigator.share({
-        title: '', // 공유될 제목
-        text: '', //`${t("@CP_CARE_SMARTLIFE_CONTENTS_SHARE_TITLE_S")}`, // 공유될 설명
-        url: res.shortLink, // 공유될 URL
+        title: 'share', // 공유될 제목
+        text: 'share', //`${t("@CP_CARE_SMARTLIFE_CONTENTS_SHARE_TITLE_S")}`, // 공유될 설명
+        url: 'https://www.naver.com', // 공유될 URL
         //files: [], // 공유할 파일 배열
       });
       //resolve(res.data);   
-    })
+    }).then((data)=>data)
+      .then((data)=>console.log(data))
     .catch((error) => {  
       //reject(error);  
     });
@@ -137,7 +138,9 @@ const App = () => {
       const windowURL = new URL(window.location.href),
         orderNo = windowURL.searchParams.get("orderNo");//주문번호
       const mbrNo = authInfo.headers['x-user-no'];//주문자
-  
+      //mrbNo KR2107146190022
+      //orderNo null
+
       fetch(
         `${authInfo.url}/css/contents/content?type=onboard&keyword=${authInfo.modelName}&searchOption=tag`,
         {
@@ -155,7 +158,7 @@ const App = () => {
           .then((data) => (data))
           .then((data) => {
             setData(data);
-            //console.log(data);
+            console.log(data); //json 데이터들
           }).catch((error) => console.log("error:", error));
       });
   
@@ -213,8 +216,8 @@ const App = () => {
           firstOrder = orderData[0];
         }
         setDelivery(firstOrder);
-        //console.log(firstOrder);
-      });
+        console.log(firstOrder);
+      })
     });
   }, []);
 
