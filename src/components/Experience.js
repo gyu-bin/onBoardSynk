@@ -3,7 +3,8 @@ import styled from "styled-components";
 import Button from "components/atom/Button";
 import Section from "components/Section";
 import Title from "components/Title";
-import IconYoutube from "images/logo_youtube.png";
+import IconExp from "images/onboard_title_ic_video.png";
+import IconPlay from "images/btn_contents_play.png";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 
@@ -16,14 +17,9 @@ const tempDate = [
 const ExperienceContainer = styled.div`
   position: relative;
   overflow: hidden;
-  .slick-list {
-    padding: 0 60px 0 0 !important;
-  }
-`;
-
-const TipArea = styled.div`
   display: flex;
   flex-direction: column;
+  padding: 0 20px;
 `;
 
 const ListItems = styled.div`
@@ -31,20 +27,39 @@ const ListItems = styled.div`
   box-sizing: border-box;
 `;
 
-const TipImg = styled.img`
+const ExpVideo = styled.div`
+  position: relative;
+  overflow: hidden;
+  border-radius: 15px;
+  &:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: inline-block;
+    width: 36px;
+    height: 36px;
+    background: url(${IconPlay}) no-repeat center center;
+    background-size: 100%;
+  }
+`;
+
+const ExpImg = styled.img`
   width: 100%;
 `;
 
 const ListTitle = styled.p`
   display: -webkit-box;
   overflow: hidden !important;
+  margin-top: 7px;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow-wrap: break-word;
   text-overflow: ellipsis;
   text-decoration: none;
   ${({ theme }) => theme.fontSet.Type_A08};
-  font-weight: ${({ theme }) => theme.fontWeight.Bold};
+  font-weight: ${({ theme }) => theme.fontWeight.Regular};
 `;
 
 const ListName = styled.div`
@@ -54,9 +69,10 @@ const ListName = styled.div`
   -webkit-box-orient: vertical;
   overflow-wrap: break-word;
   text-overflow: ellipsis;
+  margin-top: 2px;
   ${({ theme }) => theme.fontSet.Type_A06};
   font-weight: ${({ theme }) => theme.fontWeight.Regular};
-  color: ${({ theme }) => theme.colorSet.onboard_color_type3};
+  color: ${({ theme }) => theme.colorSet.secondary_text_default_material_light};
 `;
 
 const StyledButton = styled(Button)`
@@ -64,62 +80,57 @@ const StyledButton = styled(Button)`
   overflow: hidden;
   text-decoration: none;
   justify-content: flex-start;
-  border-radius: 15px;
   font-size: 0 !important;
 `;
 
-const TipInfo = styled.div`
+const ExpInfo = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   position: relative;
-  min-height: 100px;
-  padding: 10px;
   box-sizing: border-box;
-  border-radius: 0 0 15px 15px;
-  border: 1px solid ${({ theme }) => theme.colorSet.list_separator_background_color};
   text-align: left;
 `;
 
 const Experience = ({ expData }) => {
   return(
-    <Section style={{ paddingBottom: "60px" }}>
+    <Section style={{ paddingBottom: "20px" }}>
+      <Title className={expData ? "" : "title-box"} iconSrc={expData ? IconExp : ""} iconText={``}>
+        {expData ? "생생체험기" : "xxxxxxxxxx"}
+      </Title>
       <ExperienceContainer>
-        <Title className={expData ? "" : "title-box"} link={`https://m.youtube.com`} iconSrc={expData ? IconYoutube : ""} iconText={`Youtube 로고`} style={{ paddingRight: "20px" }}>
-          {expData ? "생생체험기" : "xxxxxxxxxx"}
-        </Title>
-        <TipArea>
-          <Swiper spaceBetween={10} loop={true}>
-            {!expData && tempDate.map((data, idx) => 
-              <SwiperSlide>
-                <ListItems key={idx}>
-                  <StyledButton href="#none">
-                    <div className="img-box">
-                      <TipImg src={imgTemp} alt=""/>
-                    </div>
-                    <TipInfo>
-                      <ListTitle className="text-box">xxxxxxxxxx</ListTitle>
-                      <ListName className="text-box">xxxxxxxxxxxxxx</ListName>
-                    </TipInfo>
-                  </StyledButton>
-                </ListItems>
-              </SwiperSlide>
-            )}
-            {expData && expData.map(({ contentId, contentType, contentUrl, thumbnail,channelName, contentTitle, viewCount }) => (
-              <SwiperSlide>
-                <ListItems key={`experience_${contentId}`}>
-                  <StyledButton href={contentUrl}>
-                    <TipImg src={thumbnail} alt={'체험기 이미지'}/>
-                    <TipInfo>
-                      <ListTitle>{contentTitle}</ListTitle>
-                      <ListName>{channelName}</ListName>
-                    </TipInfo>
-                  </StyledButton>
-                </ListItems>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </TipArea>
+        <Swiper spaceBetween={10} loop={expData && expData.length > 1 ? true : false}>
+          {!expData && tempDate.map((data, idx) => 
+            <SwiperSlide key={idx}>
+              <ListItems>
+                <StyledButton href="#none">
+                  <div className="img-box">
+                    <ExpImg src={imgTemp} alt=""/>
+                  </div>
+                  <ExpInfo>
+                    <ListTitle className="text-box">xxxxxxxxxx</ListTitle>
+                    <ListName className="text-box">xxxxxxxxxxxxxx</ListName>
+                  </ExpInfo>
+                </StyledButton>
+              </ListItems>
+            </SwiperSlide>
+          )}
+          {expData && expData.map(({ contentId, contentType, contentUrl, thumbnail,channelName, contentTitle, viewCount }) => (
+            <SwiperSlide key={`experience_${contentId}`}>
+              <ListItems>
+                <StyledButton href={contentUrl}>
+                  <ExpVideo>
+                    <ExpImg src={thumbnail} alt={'체험기 이미지'}/>
+                  </ExpVideo>
+                  <ExpInfo>
+                    <ListTitle>{contentTitle}</ListTitle>
+                    <ListName>{channelName}</ListName>
+                  </ExpInfo>
+                </StyledButton>
+              </ListItems>
+            </SwiperSlide>
+          ))}
+        </Swiper>
     </ExperienceContainer>
   </Section>
   );

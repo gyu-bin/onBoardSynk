@@ -1,7 +1,7 @@
-import styled from "styled-components";
 import Button from "components/atom/Button";
 import IconBack from "images/icon_back.png";
-import ShareIcon from 'images/share.png'
+import IconShare from 'images/btn_action_share_material_nor.png';
+import styled from "styled-components";
 
 const HeaderContainer = styled.div`
   position: fixed;
@@ -10,23 +10,32 @@ const HeaderContainer = styled.div`
   right: 0;
   display: flex;
   flex: 1;
-  padding: 12px 24px 12px 10px;
+  padding: 12px 10px;
   align-items: center;
+  justify-content: space-between;
   z-index: 2;
   background: ${({ theme }) => theme.colorSet.background_material_light};
 `;
 
 const TitleBox = styled.h1`
+  display: flex;
+  flex: 1;
   margin-left: 5px;
   ${({ theme }) => theme.fontSet.Type_A12};
   font-weight: ${({ theme }) => theme.fontWeight.Bold};
 `;
 
-const StyledButton = styled(Button)`
+const StyledButtonBack = styled(Button)`
   display: inline-block;
+  font-size: 0;
 `;
 
-const Icon = styled.span`
+const StyledButtonShare = styled(Button)`
+  display: inline-block;
+  font-size: 0;
+`;
+
+const BtnIconBack = styled.span`
   display: inline-block;
   width:32px;
   height:32px;
@@ -35,30 +44,13 @@ const Icon = styled.span`
   background-size: 100%;
 `;
 
-const IconArea=styled.button`
-  font-size: 12px;
-  margin-left: 10px;
-`
-
-const SearchBtn = styled.button`
-  margin: 3px;
-  border: none;
-  border-radius: 4px;
-  height: 25px;
-  font-size: 10px;
-  background-color: #74b9ff;
-  color: white;
-`;
-
-const IconCore = styled.span`
+const BtnIconShare = styled.span`
   display: inline-block;
-  width: 24px;
-  height: 24px;
+  width: 32px;
+  height: 32px;
   margin-right: 2px;
-  background-size: 15px !important;
-`;
-const IconGuide = styled(IconCore)`
-  background: url(${ShareIcon}) no-repeat center center;
+  background-size: 100% !important;
+  background: url(${IconShare}) no-repeat center center;
 `;
 
 const webShare=()=>{
@@ -93,12 +85,14 @@ const Header = ({ headerData }) => {
 
   return (
     <HeaderContainer>
-      <StyledButton aria-label="뒤로가기" className={headerData ? "" : "button-box"} onClick={() => {
-        window.NativeInterface.closeView();
-      }}><Icon /></StyledButton>
+      <StyledButtonBack aria-label="뒤로가기" className={headerData ? "" : "button-box"}
+        onClick={() => {
+          window.NativeInterface.closeView();
+        }}>
+        <BtnIconBack />
+      </StyledButtonBack>
       <TitleBox className={headerData ? "" : "text-box"}>{headerData ? headerData : "xxxxxxxxxxx"}</TitleBox>
-      <button>
-        <IconGuide onClick={async ()=>{
+      <StyledButtonShare aria-label="공유가기" onClick={async ()=>{
           try {
             await navigator.share(shareData);
             console.log(shareData);
@@ -109,10 +103,9 @@ const Header = ({ headerData }) => {
             // 공유하기 버튼을 지원하지 않는 경우에 대한 폴백 처리
             alert('공유안됨')
           }
-        }}/>
-        <IconGuide onClick={webShare}/>
-        <IconGuide onClick={shareTest}/>
-      </button>
+        }}>
+        <BtnIconShare />
+      </StyledButtonShare>
     </HeaderContainer>
 );
 }

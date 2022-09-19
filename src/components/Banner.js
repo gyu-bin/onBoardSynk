@@ -26,12 +26,12 @@ const BannerText = styled.h2`
   left: 5%;
   text-align: left;
   white-space: pre-wrap;
-  color: ${({ theme }) => theme.colorSet.onboard_color_type1};
+  color: ${({ theme }) => theme.colorSet.primary_text_default_material_light};
 `;
 
 const Main = styled.div`
   position: relative;
-  ${({ theme }) => theme.fontSet.Type_A24};
+  ${({ theme }) => theme.fontSet.Type_A14};
   font-weight: ${({ theme }) => theme.fontWeight.Bold};
 `;
 

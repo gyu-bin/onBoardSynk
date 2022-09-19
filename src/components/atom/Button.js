@@ -10,14 +10,16 @@ const ButtonStyled = styled.button`
   font-size: inherit;
   line-height: inherit;
   font-weight: inherit;
+  color: ${({ theme }) => theme.colorSet.primary_text_default_material_light};
   &[type="type1"] {
     display: flex;
     justify-content: center;
     flex-direction: row;
     flex-basis: calc(50% - 6px);
-    padding: 8px 0;
+    align-items: center;
     border-radius: 20px;
     border: 1px solid ${({ theme }) => theme.colorSet.color_control_normal_ui};
+    ${({ theme }) => theme.fontSet.Type_A08};
     color: ${({ theme }) => theme.colorSet.primary_text_default_material_light};
     background: ${({ theme }) => theme.colorSet.background_material_light};
   }

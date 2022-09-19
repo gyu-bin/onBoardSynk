@@ -2,7 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import Section from "components/Section";
 import Title from "components/Title";
-import IconInfo from "images/icon_info.png";
+import IconProExp from "images/onboard_info_product_ic_expendables.png";
+import IconProBook from "images/onboard_info_product_ic_productbook.png";
+import IconInfo from "images/onboard_title_ic_info.png";
+import IconPlay from "images/btn_contents_play.png";
 import Button from "components/atom/Button";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -19,31 +22,30 @@ const tempData = [
 
 const IconCore = styled.span`
   display: inline-block;
-  width: 24px;
-  height: 24px;
-  margin-right: 2px;
-  background-size: 15px !important;
+  width: 28px;
+  height: 28px;
+  margin-right: 4px;
+  background-size: 100% !important;
 `;
 
 const IconGuide = styled(IconCore)`
-  background: url(${IconInfo}) no-repeat center center;
+  background: url(${IconProExp}) no-repeat center center;
 `;
 
 const IconBuy = styled(IconCore)`
-  background: url(${IconInfo}) no-repeat center center;
+  background: url(${IconProBook}) no-repeat center center;
 `;
 
 const InfoContainer = styled.div`
   position: relative;
+  padding: 0 20px;
   .swiper-slide {
     width: 40%;
   }
-  &.space {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
   &.bg {
-    background: ${({ theme }) => theme.colorSet.list_separator_background_color};
+    margin-top: 20px;
+    padding-bottom: 30px;
+    background: ${({ theme }) => theme.colorSet.onboard_color_type1}; 
   }
 `;
 
@@ -60,46 +62,51 @@ const InfoProduct = styled.div`
 const InfoThumnail = styled.div`
   position: relative;
   overflow: hidden;
-  flex-basis: 31%;
-  padding-top: 31%;
+  flex-basis: 23%;
+  padding-top: 23%;
+  margin-right: 16px;
   border-radius: 10px;
-  background: ${({ theme }) => theme.colorSet.background_material_dark_10};
 `;
 
 const InfoThumnailImg = styled.img`
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
+  transform: translate(-50%, -50%) scale(1.1);
+  height: 100%;
 `;
 
 const InfoDesc = styled.div`
-  flex-basis: 69%;
-  padding-left: 16px;
+  display: flex;
+  flex-basis: 74.3%;
+  align-items: start;
+  justify-content: center;
+  flex-direction: column;
   box-sizing: border-box;
 `;
 
 const InfoProductName = styled.div`
-  ${({ theme }) => theme.fontSet.Type_A12};
+  ${({ theme }) => theme.fontSet.Type_A08};
   font-weight: ${({ theme }) => theme.fontWeight.Regular};
 `;
 
 const InfoModelName = styled.div`
-  ${({ theme }) => theme.fontSet.Type_A08};
+  margin-top: 2px;
+  ${({ theme }) => theme.fontSet.Type_A06};
   font-weight: ${({ theme }) => theme.fontWeight.Regular};
   color: ${({ theme }) => theme.colorSet.secondary_text_default_material_light};
 `;
 
 const InfoSupport = styled.div`
   position: relative;
-  margin-top: 28px;
+  margin-top: 23px;
   display: flex;
   justify-content: space-between;
 `;
 
 const InfoTitle = styled.div`
-  padding: 20px 0;
+  padding: 13px 0 12px;
+  margin-bottom: 12px;
   ${({ theme }) => theme.fontSet.Type_A06};
   font-weight: ${({ theme }) => theme.fontWeight.Bold};
   color: ${({ theme }) => theme.colorSet.primary_text_default_material_light};
@@ -122,6 +129,7 @@ const TipImg = styled.img`
 
 const TipInfo = styled.div`
   position: relative;
+  margin-top: 5px;
 `;
 
 const TipThumnail = styled.div`
@@ -129,6 +137,18 @@ const TipThumnail = styled.div`
   overflow: hidden;
   border-radius: 10px;
   font-size: 0;
+  &:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: inline-block;
+    width: 36px;
+    height: 36px;
+    background: url(${IconPlay}) no-repeat center center;
+    background-size: 100%;
+  }
 `;
 
 const ListTitle = styled.p`
@@ -147,11 +167,11 @@ const ListTitle = styled.p`
 const ProductInfo = ({ productData }) => {
   console.log(productData);
   return(
-    <Section style={{ padding: 0 }}>
-      <InfoContainer className="space">
-        <Title className={productData ? "" : "title-box"} iconSrc={productData ? IconInfo : ""} iconText={`정보`}>
-          {productData ? "제품 정보" : "xxxxxxxxxx"}
-        </Title>
+    <Section style={{ paddingBottom: "0" }}>
+      <Title className={productData ? "" : "title-box"} iconSrc={productData ? IconInfo : ""} iconText={`정보`}>
+        {productData ? "제품 정보" : "xxxxxxxxxx"}
+      </Title>
+      <InfoContainer>
         {!productData && (
           <>
             <InfoProduct>
@@ -185,8 +205,6 @@ const ProductInfo = ({ productData }) => {
               </InfoDesc>
             </InfoProduct>
             <InfoSupport>
-              <a href={productData.guideUrl} download style={{border:"1px solid #000"}}>test</a>
-              <a href={"https://www.naver.com"} download style={{border:"1px solid #000"}}>naver</a>
               <StyledButton type={`type1`} href={productData.guideUrl}>
                 <IconGuide />사용설명서
               </StyledButton>
@@ -197,14 +215,14 @@ const ProductInfo = ({ productData }) => {
           </>
         )}
       </InfoContainer>
-      <InfoContainer className="space bg" style={{ marginTop: "20px" }}>
+      <InfoContainer className="bg">
         <InfoTitle className={productData ? "" : "title-box"}>
           {productData ? "제품 설치 전 확인해주세요." : "xxxxxxxxxx"}
         </InfoTitle>
-        <Swiper spaceBetween={10} slidesPerView={"auto"} loop={true}>
+        <Swiper spaceBetween={10} slidesPerView={"auto"} loop={productData && productData.length > 1 ? true : false}>
           {!productData && tempData.map((data, idx) =>
-            <SwiperSlide>
-              <ListItems key={`product_${idx}`}>
+            <SwiperSlide key={`product_${idx}`}>
+              <ListItems>
                 <StyledButton href={""}>
                   <TipImg src={imgTemp} alt=""/>
                   <TipInfo>
@@ -215,8 +233,8 @@ const ProductInfo = ({ productData }) => {
             </SwiperSlide>
           )}
           {productData && productData.videoContents.map(({ contentId, contentUrl, thumbnail, title }) => (
-            <SwiperSlide>
-              <ListItems key={`product_${contentId}`}>
+            <SwiperSlide key={`product_${contentId}`}>
+              <ListItems>
                 <StyledButton href={contentUrl}>
                   <TipThumnail><TipImg src={thumbnail} alt={'체험기 이미지'}/></TipThumnail>
                   <TipInfo>

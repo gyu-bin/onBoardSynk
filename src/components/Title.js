@@ -7,8 +7,8 @@ const TitleStyle = ({ arrow }) => css`
   ${arrow !== false && `
     content:"";
     display: inline-block;
-    width: 32px;
-    height: 32px;
+    width: 16px;
+    height: 16px;
     margin-left: 5px;
     background: url("${IconNext}") no-repeat center center;
     background-size: 100%;
@@ -17,16 +17,14 @@ const TitleStyle = ({ arrow }) => css`
 
 const TitleContainer = styled.div`
   position: relative;
-  padding: 18px 0;
+  padding: 6px 20px;
+  margin-bottom: 5px;
 `;
 
 const StyledButton = styled(Button)`
   display: flex;
-  flex: 1;
   align-items: center;
   flex-basis: auto;
-  flex-shrink: 0;
-  justify-content: space-between;
   &:after {
     ${TitleStyle};
   }
@@ -37,15 +35,15 @@ const TitleBox = styled.h3`
   display: flex;
   flex: 1;
   align-items: center;
-  ${({ theme }) => theme.fontSet.Type_A09};
-  font-weight: ${({ theme }) => theme.fontWeight.Regular};
+  ${({ theme }) => theme.fontSet.Type_A06};
+  font-weight: ${({ theme }) => theme.fontWeight.Bold};
 `;
 
 const Icon = styled.span`
   display: inline-block;
-  width: 20px;
-  height: 20px;
-  margin-right: 15px;
+  width: 32px;
+  height: 32px;
+  margin-right: 4px;
   img {
       width: 100%;
   }

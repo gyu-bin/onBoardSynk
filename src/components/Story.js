@@ -1,8 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import Section from "components/Section";
+import Button from "components/atom/Button";
 import Title from "components/Title";
-import IconLg from "images/logo_lg.png";
+import IconStory from "images/onboard_title_ic_story.png";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 
@@ -11,17 +12,18 @@ const imgTemp = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABAsAAAJXCAMAAADCe
 const StoryContainer = styled.div`
   position: relative;
   overflow: hidden;
-`;
-
-const StoryArea = styled.div`
   display: flex;
   flex-direction: column;
+  padding: 0 20px;
   .swiper-slide {
     width: 90%;
   }
+  &.full .swiper-slide {
+    width: 100%;
+  }
 `;
 
-const Link = styled.a`
+const StyledButton = styled(Button)`
   display: flex;
   flex-direction: column;
   @media screen and (min-width: 600px) {
@@ -48,13 +50,14 @@ const StoryTitle = styled.div`
   overflow: hidden;
   display: -webkit-box;
   width: 100%;
-  margin-top: 17px;
+  margin-top: 10px;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow-wrap: break-word;
   text-overflow: ellipsis;
   ${({ theme }) => theme.fontSet.Type_A08};
-  font-weight: ${({ theme }) => theme.fontWeight.Bold};
+  font-weight: ${({ theme }) => theme.fontWeight.Regular};
+  color: ${({ theme }) => theme.colorSet.primary_text_default_material_light};
   @media screen and (min-width: 600px) {
     margin-top: 0;
   }
@@ -71,6 +74,7 @@ const StoryDesc = styled.div`
   text-overflow: ellipsis;
   ${({ theme }) => theme.fontSet.Type_A06};
   font-weight: ${({ theme }) => theme.fontWeight.Regular};
+  color: ${({ theme }) => theme.colorSet.secondary_text_default_material_light};
   @media screen and (min-width: 600px) {
     white-space: unset;
   }
@@ -98,49 +102,47 @@ const ListItems = styled.div`
 
 const Story = ({ storyData }) => {
   return(
-    <Section>
-      <StoryContainer>
-        <Title className={storyData ? "" : "title-box"} link={`https://m.naver.com`} iconSrc={storyData ? IconLg : ""} iconText={`LG 로고`}>
-          {storyData ? "에어로타워 스토리" : "xxxxxxxxxx"}
-        </Title>
-        <StoryArea>
-          <Swiper spaceBetween={10} slidesPerView={"auto"} loop={true}>
-            {!storyData && (
-              <SwiperSlide>
-                <ListItems key={0}>
-                  <Link  href="">
-                    <StoryImgDiv>
-                      <StoryThumnail className="img-box">
-                        <StoryImg src={imgTemp} alt=""/>
-                      </StoryThumnail>
-                    </StoryImgDiv>
-                    <StoryText>
-                      <StoryTitle className="text-box">xxxxxxxxxxxxxx</StoryTitle>
-                      <StoryDesc className="text-box">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</StoryDesc>
-                    </StoryText>
-                  </Link>
-                </ListItems>
-              </SwiperSlide>
-            )}
-            {storyData && storyData.map(({ contentId, contentUrl, thumbnail, contentTitle, contentDescription }) => (
-              <SwiperSlide>
-                <ListItems key={`story_${contentId}`}>
-                  <Link href={contentUrl}>
-                    <StoryImgDiv>
-                      <StoryThumnail>
-                        <StoryImg src={thumbnail} alt={'리뷰 이미지'}/>
-                      </StoryThumnail>
-                    </StoryImgDiv>
-                    <StoryText>
-                      <StoryTitle>{contentTitle}</StoryTitle>
-                      <StoryDesc>{contentDescription}</StoryDesc>
-                    </StoryText>
-                  </Link>
-                </ListItems>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </StoryArea>
+    <Section style={{ paddingBottom: "25px" }}>
+      <Title className={storyData ? "" : "title-box"} iconSrc={storyData ? IconStory : ""} iconText={``}>
+        {storyData ? "에어로타워 스토리" : "xxxxxxxxxx"}
+      </Title>
+      <StoryContainer className={storyData && storyData.length > 1 ? "" : "full"}>
+        <Swiper spaceBetween={10} slidesPerView={"auto"} loop={storyData && storyData.length > 1 ? true : false}>
+          {!storyData && (
+            <SwiperSlide>
+              <ListItems key={0}>
+                <StyledButton href="">
+                  <StoryImgDiv>
+                    <StoryThumnail className="img-box">
+                      <StoryImg src={imgTemp} alt=""/>
+                    </StoryThumnail>
+                  </StoryImgDiv>
+                  <StoryText>
+                    <StoryTitle className="text-box">xxxxxxxxxxxxxx</StoryTitle>
+                    <StoryDesc className="text-box">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</StoryDesc>
+                  </StoryText>
+                </StyledButton>
+              </ListItems>
+            </SwiperSlide>
+          )}
+          {storyData && storyData.map(({ contentId, contentUrl, thumbnail, contentTitle, contentDescription }) => (
+            <SwiperSlide key={`story_${contentId}`}>
+              <ListItems>
+                <StyledButton href={contentUrl}>
+                  <StoryImgDiv>
+                    <StoryThumnail>
+                      <StoryImg src={thumbnail} alt={'리뷰 이미지'}/>
+                    </StoryThumnail>
+                  </StoryImgDiv>
+                  <StoryText>
+                    <StoryTitle>{contentTitle}</StoryTitle>
+                    <StoryDesc>{contentDescription}</StoryDesc>
+                  </StoryText>
+                </StyledButton>
+              </ListItems>
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </StoryContainer>
     </Section>
   );

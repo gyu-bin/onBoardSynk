@@ -25,6 +25,7 @@ const StyledRippleOutSide = styled.span`
   pointer-events: none;
   opacity: 0;
   background: ${({ theme }) => theme.colorSet.color_ripple_material_light_20};
+  z-index: 1;
 
   @keyframes ripple-effect-outside {
     0% {
@@ -49,7 +50,7 @@ const StyledRippleOutSide = styled.span`
     animation-fill-mode: forwards;
     animation-delay: 0ms;
     animation-name: ripple-effect-outside;
-    animation-duration: 1000ms;
+    animation-duration: 500ms;
     pointer-events: none;
   }
 `;
@@ -59,7 +60,7 @@ const StyledRippleEffectInside = styled(StyledRippleEffect)`
     animation-fill-mode: forwards;
     animation-delay: 0ms;
     animation-name: ripple-effect-inside;
-    animation-duration: 1000ms;
+    animation-duration: 500ms;
     pointer-events: none;
   }
 `;

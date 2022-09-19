@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Section from "components/Section";
 import Title from "components/Title";
-import IconInfo from "images/icon_info.png";
-import OrderImg0 from "images/icon_delivery_step0.png";
-import OrderImg1 from "images/icon_delivery_step1.png";
-import OrderImg2 from "images/icon_delivery_step2.png";
-import OrderImg3 from "images/icon_delivery_step3.png";
+import IconDelivery from "images/onboard_title_ic_delivery.png";
+import OrderImg0 from "images/onboard_delivery_ic_ready_ing.png";
+import OrderImg1 from "images/onboard_delivery_ic_ready_done.png";
+import OrderImg2 from "images/onboard_delivery_ic_delivery_ing.png";
+import OrderImg3 from "images/onboard_delivery_ic_delivery_done.png";
 import OrderNew from "images/icon_new.png";
 
 const imgTemp = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANcAAADXCAMAAAC+ozSHAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6RTc1MEU0MUQyRTY2MTFFREIwMjhBMTRCMUU2NjY2QkUiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6RTc1MEU0MUUyRTY2MTFFREIwMjhBMTRCMUU2NjY2QkUiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpFNzUwRTQxQjJFNjYxMUVEQjAyOEExNEIxRTY2NjZCRSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpFNzUwRTQxQzJFNjYxMUVEQjAyOEExNEIxRTY2NjZCRSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PsL8TV4AAAAGUExURf///wAAAFXC034AAAABdFJOUwBA5thmAAAAR0lEQVR42uzBAQEAAACCIP+vbkhAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA7yaAAAMAtWgAARlggcUAAAAASUVORK5CYII=';
@@ -31,7 +31,7 @@ const DeliveryContainer = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 0 32px;
+  padding: 15px 0 32px;
   background: ${({ theme }) => theme.colorSet.background_material_light};
 `;
 
@@ -55,41 +55,41 @@ const StepIcon = styled.div`
   width: 16px;
   height: 16px;
   margin-top: -4px;
+  box-sizing: border-box;
   border-radius: 50%;
+  border: 2px solid ${({ theme }) => theme.colorSet.color_control_normal_ui_v};
   font-size: 0;
-  background: ${({ theme }) => theme.colorSet.color_control_normal_ui_v};
+  background: ${({ theme }) => theme.colorSet.popup_background_color};
   img {
     display: none;
   }
-  &:after,
-  &:before {
-    content: "";
-    display: inline-block;
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-    background: ${({ theme }) => theme.colorSet.popup_background_color};
-  }
-  &:after {
-    display: none;
-    width:48px;
-    height:48px;
-    opacity: .5;
-    background: ${({ theme }) => theme.colorSet.color_accent_ui};
-  }
   .done & {
+    border: 0;
     background: ${({ theme }) => theme.colorSet.color_accent_ui};
   }
   .now & {
     width: 48px;
     height: 48px;
+    border: none;
     background: none;
-    &:after {
+    &:after,
+    &:before {
+      content: "";
       display: inline-block;
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: ${({ theme }) => theme.colorSet.popup_background_color};
+    }
+    &:after {
+      width:48px;
+      height:48px;
+      opacity: .5;
+      background: ${({ theme }) => theme.colorSet.color_accent_ui};
     }
     &:before{
       width: 36px;
@@ -113,7 +113,7 @@ const StepIcon = styled.div`
 const StepImg = styled.img`
   height: auto;
   position: absolute;
-  width: 48%;
+  width: 68%;
   height: auto;
   top: 50%;
   left: 50%;
@@ -137,9 +137,6 @@ const StepBox = styled.div`
 
 const StepInfo = styled.div`
   position: relative;
-  justify-content: center;
-  display: flex;
-  align-items: center;
   margin-bottom: 18px;
 `;
 
@@ -164,6 +161,8 @@ const StepBadge = styled.span`
   width: 18px;
   height: 18px;
   margin-left: 3px;
+  margin-top: 1px;
+  vertical-align: top;
   background: url(${OrderNew}) no-repeat center center;
   background-size: 100%;
 `;
@@ -252,8 +251,8 @@ const Delivery = ({deliveryData}) => {
   }, [deliveryData]);
   return (
     <>
-      <Section>
-        <Title className={deliveryData ? "" : "title-box"} link={`https://`} iconSrc={deliveryData ? IconInfo : ""} iconText={`정보`} style={{ paddingRight: "20px" }}>
+      <Section space={false}>
+        <Title className={deliveryData ? "" : "title-box"} link={`https://`} iconSrc={deliveryData ? IconDelivery : ""} iconText={``}>
           {deliveryData ? "주문 현황" : "xxxxxxxxxx"}
         </Title>
         <DeliveryContainer>

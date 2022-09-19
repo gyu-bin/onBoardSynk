@@ -18,6 +18,7 @@ import { productInfo } from "ProductInfoMock";
 
 const ViewWrap = styled.div`
   position: relative;
+  padding-bottom: 40px;
   border-top: 56px solid transparent;
 `;
 const Share = styled.div`
