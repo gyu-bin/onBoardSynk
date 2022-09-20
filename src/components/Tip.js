@@ -91,7 +91,7 @@ const Tip = ({ tipData }) => {
       </Title>
       <TipContainer>
         <TipArea>
-          <Swiper pagination={true} modules={[Pagination]} className={isData && isData.length > 1 ? "pageable" : ""}>
+          <Swiper spaceBetween={10} pagination={true} modules={[Pagination]} className={isData && isData.length > 1 ? "pageable" : ""}>
             {!isData && tempData.map((data, idx) => 
               <SwiperSlide key={idx}>
                 <div className="box img-box">

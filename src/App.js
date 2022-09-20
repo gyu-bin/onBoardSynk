@@ -1,20 +1,21 @@
-import React, { useEffect, useState, useCallback } from "react";
-import styled from "styled-components";
-import axios from "axios";
 import "App.css";
+import axios from "axios";
 import Banner from "components/Banner";
 import Delivery from "components/Delivery";
 import Exp from "components/Experience";
 import Header from "components/Header";
+import ProductInfo from "components/ProductInfo";
 import Review from "components/Review";
 import Story from "components/Story";
-import Tip from "components/Tip";
-import ProductInfo from "components/ProductInfo";
-import iosTheme from "components/theme/iosTheme";
-import { ThemeProvider } from "styled-components";
-import { ErrorBoundary } from "libs/ErrorBoundaries";
 import { defaultTheme } from "components/theme/default";
-import { productInfo } from "ProductInfoMock";
+import iosTheme from "components/theme/iosTheme";
+import Tip from "components/Tip";
+import { ErrorBoundary } from "libs/ErrorBoundaries";
+import { useCallback, useEffect, useState } from "react";
+import styled, { ThemeProvider } from "styled-components";
+
+import Portal from 'components/Portal';
+import ErrorPage from "./components/ErrorPage";
 
 const ViewWrap = styled.div`
   position: relative;
@@ -85,19 +86,17 @@ const set10DayBefore = () => {
     year_ = month_ < 1 ? year - 1 : year;
   return `${year_}-${month_ < 10 ? '0' + month_ : month_}-${day < 10 ? '0' + day : day}T${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}Z`;
 }
-const getLateTime = (t1, t2) => {
-  const t1DateTime = new Date(t1),
-    t2DateTime = new Date(t2);
-  if (t1DateTime >= t2DateTime) {
-    return true;
-  }
-}
 
 const App = () => {
   const [data, setData] = useState([]);
   const [delivery, setDelivery] = useState();
   const [firebaseApiKey, setFirebaseApiKey] = useState('VGhpblEyLjAgU0VSVklDRQ==');
-  const [productData, setProductData] = useState(productInfo);
+
+  const [NetErrOn, setNetErrOn]=useState(false);
+  const showNetSheet=(show)=>{
+    setNetErrOn(show)
+  }
+
   const share = useCallback(() => {
     // //deepLink
     // const baseUrl = `https://lgthinq.page.link/?link=https://lgthinq.lge.com/thinqapp/care?state=CDM_Detail`;
@@ -174,53 +173,46 @@ const App = () => {
           cache: "force-cache",
         }
       ).then(res => res.json())
-      .then((data) => (data))
-      .then((data) => {
-        //console.log(data);
-        const orderData = data.result.messages.filter((data) => {
-          if (data.orders[0].salesModelName === authInfo.modelName && data.orders[0].orderNo === orderNo) {
-            return data;
-          }
-        });
-        const orderList = ['completeDelivery','deliverying','prepareDeliver','ordered'];
-        let firstOrder = null;
-        if (orderData.length > 1) {
-          let orders = [];
-          orderList.forEach((order) => {//주문 우선순위로 sorting
-            orderData.forEach((data) => {
-              if (data.status === orderList[order]) {
-                orders.push(data);
-              }
-            });
-          });
-          const order = orders.filter((data) => {
-            return data.status === orders[0];
-          })
-          order.sort((a,b) => {
-            if (new Date(a) < new Date(b)){
-              return 1;
-            } else if (new Date(a) > new Date(b)){
-              return -1;
-            } else if (new Date(a) === new Date(b)){
-              return 0;
+        .then((data) => (data))
+        .then((data) => {
+          const orderData = data.result.messages.filter((data) => {
+            if (data.orders[0].salesModelName === authInfo.modelName && data.orders[0].orderNo === orderNo) {
+              return data;
             }
           });
-          firstOrder = order[0];
-          // if (orders[0].status === orders[1].status) {//상태가 같은 주문이 있을 경우
-          //   if (getLateTime(orders[0].createdAt, orders[1].createdAt)) {
-          //     firstOrder = orders[0];
-          //   } else {
-          //     firstOrder = orders[1];
-          //   }
-          // }
-        } else {
-          firstOrder = orderData[0];
-        }
-        setDelivery(firstOrder);
-        console.log(firstOrder);
-      })
+          const orderList = ['completeDelivery','deliverying','prepareDelivery','ordered'];
+          let firstOrder = null;
+          if (orderData.length > 1) {
+            let orders = [];
+            orderList.forEach((order) => {//주문 우선순위로 sorting
+              orderData.forEach((data) => {
+                if (data.status === order) {
+                  orders.push(data);
+                }
+              });
+            });
+            const order = orders.filter((data) => {
+              return data.status === orders[0].status;
+            })
+            order.sort((a,b) => {
+              if (new Date(a.statusAt) < new Date(b.statusAt)){
+                return 1;
+              } else if (new Date(a.statusAt) > new Date(b.statusAt)){
+                return -1;
+              } else if (new Date(a.statusAt) === new Date(b.statusAt)){
+                return 0;
+              }
+            });
+            firstOrder = order[0];
+          } else {
+            firstOrder = orderData[0];
+          }
+          setDelivery(firstOrder);
+          console.log(firstOrder);
+        })
     });
   }, []);
+
 
   // device theme fontSize
   let theme = defaultTheme;
@@ -232,10 +224,11 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <ViewWrap className="App">
         <ErrorBoundary>
+          {/* <ErrorPage /> */}
           <Header headerData={data.title} />
           <Banner bannerData={data.banner} />
           <Delivery deliveryData={delivery} />
-          <ProductInfo productData={productData} />
+          <ProductInfo productData={data.modelInfo} />
           <Review reviewData={data.productReview} />
           <Story storyData={data.LGcontent} />
           <Tip tipData={data.instaContent} />
@@ -245,6 +238,11 @@ const App = () => {
           }}/>
         </ErrorBoundary>
       </ViewWrap>
+      <Portal showNetSheet={showNetSheet}>
+      {NetErrOn && (
+          <ErrorPage />
+      )}
+      </Portal>
     </ThemeProvider>
   );
 }

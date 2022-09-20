@@ -61,7 +61,7 @@
 .title-box a:after{opacity:0 !important;}
 .title-box{animation:opacity 1s ease-in-out alternate infinite !important;}
 .text-box{background:#f1f3f5 !important;color:transparent !important;animation:opacity 1s ease-in-out alternate infinite !important;}
-.banner-box{background:#f7e2df;animation:opacity 1s ease-in-out alternate infinite;}
+.banner-box{background:#ffd3d3;animation:opacity 1s ease-in-out alternate infinite;}
 .banner-text{background:rgba(255,255,255,.5);color:transparent;animation:opacity 1s ease-in-out alternate infinite;}
 .img-box{background:#f1f3f5;animation:opacity 1s ease-in-out alternate infinite;}
 .button-box{background:#f1f3f5;animation:opacity 1s ease-in-out alternate infinite;}

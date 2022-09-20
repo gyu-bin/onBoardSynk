@@ -169,6 +169,7 @@ theme.colorSet = {
   purple_color_accent_ui_900: "#2C00C3",
 
   onboard_color_type1: "#fff8e1",
+  onboard_color_type2: "#ffd3d3",
   onboard_color_type3: "#757575",
   onboard_color_type4: "#626262",
 };

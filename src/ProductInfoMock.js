@@ -2,7 +2,9 @@ export const productInfo = {
   productName:"LG 퓨리케어 오브제컬렉션 에어로타워(일반)",
   modelName:"C2ENPC21.AKOR",
   modelThumbnail:"../assets/images/productThum.png",
-  guideUrl:"https://gscs-b2c.lge.com/downloadFile?fileId=fB26ZA4cfmnwiTpyBQNwYQ",
+  guideUrl:["https://gscs-b2c.lge.com/downloadFile?fileId=fB26ZA4cfmnwiTpyBQNwYQ",
+    "https://gscs-b2c.lge.com/downloadFile?fileId=fB26ZA4cfmnwiTpyBQNwYQ",
+    "https://gscs-b2c.lge.com/downloadFile?fileId=fB26ZA4cfmnwiTpyBQNwYQ"],
   guideVer:"2022.07.08",
   consumablesUrl:"https://www.lge.co.kr/aerotower/c2enpc21#pdp_item",
   videoContents:[

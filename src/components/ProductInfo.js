@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Section from "components/Section";
 import Title from "components/Title";
@@ -9,6 +9,8 @@ import IconPlay from "images/btn_contents_play.png";
 import Button from "components/atom/Button";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
+import Portal from 'components/Portal';
+import BottomSheet from 'components/BottomSheet';
 
 const imgTemp = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABAsAAAJXCAMAAADCeC0zAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6RjRBNjJENzgyRTY2MTFFRDkyRDJDQjI4N0VCNzI0MTMiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6RjRBNjJENzkyRTY2MTFFRDkyRDJDQjI4N0VCNzI0MTMiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpGNEE2MkQ3NjJFNjYxMUVEOTJEMkNCMjg3RUI3MjQxMyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpGNEE2MkQ3NzJFNjYxMUVEOTJEMkNCMjg3RUI3MjQxMyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PmwiqqQAAAAGUExURf///wAAAFXC034AAAABdFJOUwBA5thmAAACc0lEQVR42uzBMQEAAADCoPVPbQlPoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB4mQADAHibAAH8kTxoAAAAAElFTkSuQmCC';
 
@@ -163,90 +165,114 @@ const ListTitle = styled.p`
   font-weight: ${({ theme }) => theme.fontWeight.Regular};
   color: ${({ theme }) => theme.colorSet.primary_text_default_material_light};
 `;
-
-const ProductInfo = ({ productData }) => {
-  console.log(productData);
+const ProductInfo = ({ 
+  productData,
+}) => {
+  const [guideUrl, setGuideUrl] = useState();
+  //console.log(productData);
+  useEffect(() => {
+    if (productData) {
+      setGuideUrl(productData.guideUrl);
+    }
+  }, [productData])
+  const [bottomSheetOn, setBottomSheetOn] = useState(false);
+  const showBottomSheet = (show) => {
+    setBottomSheetOn(show);
+  }
   return(
-    <Section style={{ paddingBottom: "0" }}>
-      <Title className={productData ? "" : "title-box"} iconSrc={productData ? IconInfo : ""} iconText={`정보`}>
-        {productData ? "제품 정보" : "xxxxxxxxxx"}
-      </Title>
-      <InfoContainer>
-        {!productData && (
-          <>
-            <InfoProduct>
-              <InfoThumnail>
-                <InfoThumnailImg className="img-box" src={imgTemp2} alt="제품 이미지" />
-              </InfoThumnail>
-              <InfoDesc>
-                <InfoProductName className="text-box">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</InfoProductName>
-                <InfoModelName className="text-box">xxxxxxxxxxx</InfoModelName>
-              </InfoDesc>
-            </InfoProduct>
-            <InfoSupport>
-              <StyledButton type={`type1`} href={productData.guideUrl}>
-                <IconGuide />xxxxx
-              </StyledButton>
-              <StyledButton type={`type1`} href={productData.consumablesUrl}>
-                <IconBuy />xxxxxxx
-              </StyledButton>
-            </InfoSupport>
-          </>
-        )}
-        {productData && (
-          <>
-            <InfoProduct>
-              <InfoThumnail>
-                <InfoThumnailImg src={productData.modelThumbnail} alt={productData.productName}/>
-              </InfoThumnail>
-              <InfoDesc>
-                <InfoProductName>{productData.productName}</InfoProductName>
-                <InfoModelName>{productData.modelName}</InfoModelName>
-              </InfoDesc>
-            </InfoProduct>
-            <InfoSupport>
-              <StyledButton type={`type1`} href={productData.guideUrl}>
-                <IconGuide />사용설명서
-              </StyledButton>
-              <StyledButton type={`type1`} href={productData.consumablesUrl}>
-                <IconBuy />소모품 구매
-              </StyledButton>
-            </InfoSupport>
-          </>
-        )}
-      </InfoContainer>
-      <InfoContainer className="bg">
-        <InfoTitle className={productData ? "" : "title-box"}>
-          {productData ? "제품 설치 전 확인해주세요." : "xxxxxxxxxx"}
-        </InfoTitle>
-        <Swiper spaceBetween={10} slidesPerView={"auto"} loop={productData && productData.length > 1 ? true : false}>
-          {!productData && tempData.map((data, idx) =>
-            <SwiperSlide key={`product_${idx}`}>
-              <ListItems>
-                <StyledButton href={""}>
-                  <TipImg src={imgTemp} alt=""/>
-                  <TipInfo>
-                    <ListTitle className="text-box">xxxxxxxxxxx</ListTitle>
-                  </TipInfo>
-                </StyledButton>
-              </ListItems>
-            </SwiperSlide>
+    <>
+      <Section style={{ paddingBottom: "0" }}>
+        <Title className={productData ? "" : "title-box"} iconSrc={productData ? IconInfo : ""} iconText={`정보`}>
+          {productData ? "제품 정보" : "xxxxxxxxxx"}
+        </Title>
+        <InfoContainer>
+          {!productData && (
+            <>
+              <InfoProduct>
+                <InfoThumnail>
+                  <InfoThumnailImg className="img-box" src={imgTemp2} alt="제품 이미지" />
+                </InfoThumnail>
+                <InfoDesc>
+                  <InfoProductName className="text-box">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</InfoProductName>
+                  <InfoModelName className="text-box">xxxxxxxxxxx</InfoModelName>
+                </InfoDesc>
+              </InfoProduct>
+            </>
           )}
-          {productData && productData.videoContents.map(({ contentId, contentUrl, thumbnail, title }) => (
-            <SwiperSlide key={`product_${contentId}`}>
-              <ListItems>
-                <StyledButton href={contentUrl}>
-                  <TipThumnail><TipImg src={thumbnail} alt={'체험기 이미지'}/></TipThumnail>
-                  <TipInfo>
-                    <ListTitle>{title}</ListTitle>
-                  </TipInfo>
+          {productData && (
+            <>
+              <InfoProduct>
+                <InfoThumnail>
+                  <InfoThumnailImg src={productData.modelThumbnail} alt={productData.productName}/>
+                </InfoThumnail>
+                <InfoDesc>
+                  <InfoProductName>{productData.productName}</InfoProductName>
+                  <InfoModelName>{productData.modelName}</InfoModelName>
+                </InfoDesc>
+              </InfoProduct>
+              <InfoSupport>
+                {typeof productData.guideUrl === 'object' && (
+                  <StyledButton type={`type1`} onClick={() => {
+                    showBottomSheet(true);
+                  }}>
+                    <IconGuide />사용설명서
+                  </StyledButton>
+                )}
+                {typeof productData.guideUrl === 'string' && (
+                  <StyledButton type={`type1`} href={productData.guideUrl}>
+                    <IconGuide />사용설명서
+                  </StyledButton>
+                )}
+                <StyledButton type={`type1`} href={productData.consumablesUrl}>
+                  <IconBuy />소모품 구매
                 </StyledButton>
-              </ListItems>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </InfoContainer>
-    </Section>
+              </InfoSupport>
+            </>
+          )}
+        </InfoContainer>
+        {productData && productData.videoContents.length > 0 && (
+          <InfoContainer className="bg">
+            <InfoTitle className={productData ? "" : "title-box"}>
+              {productData ? "제품 설치 전 확인해주세요." : "xxxxxxxxxx"}
+            </InfoTitle>
+            <Swiper spaceBetween={10} slidesPerView={"auto"} loop={productData && productData.length > 1 ? true : false}>
+              {!productData && tempData.map((data, idx) =>
+                <SwiperSlide key={`product_${idx}`}>
+                  <ListItems>
+                    <StyledButton href={""}>
+                      <TipImg src={imgTemp} alt=""/>
+                      <TipInfo>
+                        <ListTitle className="text-box">xxxxxxxxxxx</ListTitle>
+                      </TipInfo>
+                    </StyledButton>
+                  </ListItems>
+                </SwiperSlide>
+              )}
+              {productData && productData.videoContents.map(({ contentId, contentUrl, thumbnail, title }) => (
+                <SwiperSlide key={`product_${contentId}`}>
+                  <ListItems>
+                    <StyledButton href={contentUrl}>
+                      <TipThumnail><TipImg src={thumbnail} alt={'체험기 이미지'}/></TipThumnail>
+                      <TipInfo>
+                        <ListTitle>{title}</ListTitle>
+                      </TipInfo>
+                    </StyledButton>
+                  </ListItems>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </InfoContainer>
+        )}
+      </Section>
+      {productData && productData.videoContents.length < 1 && (
+        <div style={{marginTop: "20px", background: "rgb(236, 236, 236)", height: "18px"}}></div>
+      )}
+      <Portal>
+        {bottomSheetOn && (
+          <BottomSheet showBottomSheet={showBottomSheet} title={"사용설명서 선택"} guideUrl={guideUrl}></BottomSheet>
+        )}
+      </Portal>
+    </>
   );
 }
 

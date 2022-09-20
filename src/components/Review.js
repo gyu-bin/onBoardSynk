@@ -167,7 +167,7 @@ const Review = ({ reviewData }) => {
                 </ReviewAreaDiv>
                 <ReviewContent>
                   <ReviewText className="text-box">xxxxxxxxxxxxxx</ReviewText>
-                  <Reviewer className="text-box">xxxxxxxx</Reviewer>
+                  <Reviewer className="text-box">xxxxxxxxxxx</Reviewer>
                 </ReviewContent>
               </StyledButton>
             </ReviewArea>

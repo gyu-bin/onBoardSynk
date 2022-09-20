@@ -53,33 +53,6 @@ const BtnIconShare = styled.span`
   background: url(${IconShare}) no-repeat center center;
 `;
 
-const webShare=()=>{
-  if (navigator.share) {
-    navigator.share({
-      title: 'power overwhelming',
-      text: 'operation cwal',
-      url: 'https://www.naver.com',
-    });
-  }else{
-    alert("왜 안됨?.")
-  }
-}
-
-const shareData = {
-  title: 'MDN',
-  text: 'Learn web development on MDN!',
-  url: 'https://developer.mozilla.org'
-}
-
-const shareTest=()=>{
-  if(typeof navigator.share !== 'undefined'){
-    window.navigator.share({
-      title: 'power overwhelming',
-      text: 'operation cwal',
-      url: 'https://www.naver.com',
-    }).then(()=>alert('됨')).catch(()=>alert('안됨'));
-  }
-}
 
 const Header = ({ headerData }) => {
 
@@ -92,20 +65,6 @@ const Header = ({ headerData }) => {
         <BtnIconBack />
       </StyledButtonBack>
       <TitleBox className={headerData ? "" : "text-box"}>{headerData ? headerData : "xxxxxxxxxxx"}</TitleBox>
-      <StyledButtonShare aria-label="공유가기" onClick={async ()=>{
-          try {
-            await navigator.share(shareData);
-            console.log(shareData);
-          } catch (err) {
-            console.log(err)
-          }
-          if (typeof navigator.share === "undefined") {
-            // 공유하기 버튼을 지원하지 않는 경우에 대한 폴백 처리
-            alert('공유안됨')
-          }
-        }}>
-        <BtnIconShare />
-      </StyledButtonShare>
     </HeaderContainer>
 );
 }
