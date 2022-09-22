@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import React, { useEffect, useRef, useState } from "react";
-import ModalPortal from "../components/ErrorPage";
-import Modal from "../components/BottomSheet";
+import ModalPortal from "components/ErrorPage";
+import Modal from "components/BottomSheet";
 
 const Dialog = props => {
   const [modalOn, setModalOn] = useState(false);

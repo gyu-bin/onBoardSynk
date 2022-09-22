@@ -70,10 +70,10 @@ const Shadow = styled.div`
   z-index:10;
 `;
 const BottomSheet = ({
-                       showBottomSheet,
-                       title,
-                       guideUrl
-                     }) => {
+    showBottomSheet,
+    title,
+    guideUrl
+  }) => {
   const [contentH, setContentH] = useState(0);
   const timeout = useRef();
   //console.log(guideUrl);

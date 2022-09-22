@@ -21,7 +21,7 @@ const Img = styled.img`
   height: 10%;
   position: relative;
   @media screen and (orientation: landscape) {
-    max-width: 60%;
+    max-width: 42%;
   }
 `;
 

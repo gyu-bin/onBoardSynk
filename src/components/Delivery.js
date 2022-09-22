@@ -238,7 +238,48 @@ const getStep = (status) => {
   }
   return stepCount;
 }
-const Delivery = ({deliveryData}) => {
+
+//getDeliveryMsg('2022-08-30T21:00:00', 'completeDelivery')
+//getDeliveryMsg('2022-09-30T21:00:00', 'deliverying')
+const getDeliveryMsg = (estimatedDeliveryDate, DeliveryStep) => {
+  const dayArray = ['일', '월', '화', '수', '목', '금', '토'];
+  const estimatedDate = new Date(estimatedDeliveryDate),
+    today = new Date(),
+    mm = estimatedDate.getMonth() + 1,
+    dd = estimatedDate.getDate(),
+    day = dayArray[estimatedDate.getDay()];
+  const remainingDay = Math.floor((estimatedDate - today) / 1000 / 60 / 60 / 24);
+  switch(DeliveryStep) {
+    case 'ordered':
+      return `${mm}/${dd}(${day}) 도착 예정`;
+    case 'prepareDelivery':
+      return `${mm}/${dd}(${day}) 도착 예정`;
+    case 'deliverying':
+      if (remainingDay > 1) {
+        return `(도착 ${remainingDay}일 전) ${mm}/${dd}(${day}) 도착 예정`;
+      } else {
+        if (estimatedDate.getDate() === today.getDate()) {
+          return `(도착 당일) 오늘(${day}) 도착 예정`;
+        } else {
+          return `(도착 1일 전) 내일(${day}) 도착 예정`;
+        }
+      }
+    case 'completeDelivery':
+      if (remainingDay < 1) {
+        return `(도착 ${Math.abs(remainingDay)}일 후) ${mm}/${dd}(${day}) 도착`;
+      } else {
+        if (estimatedDate.getDate() === today.getDate()) {
+          return `(도착 당일) 오늘(${day}) 도착`;
+        } else {
+          return `(도착 1일 후) 어제(${day}) 도착`;
+        }
+      }
+    default:
+      break;
+  }
+}
+
+const Delivery = ({ deliveryData }) => {
   // console.log(deliveryData.url);
   const [deliveryStep, setDeliveryStep] = useState(0);
   useEffect(() => {
