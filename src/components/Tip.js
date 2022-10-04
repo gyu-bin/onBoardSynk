@@ -84,38 +84,42 @@ const Tip = ({ tipData }) => {
     }
   }, [tipData]);
 
-  return(
-    <Section>
-      <Title className={tipData ? "" : "title-box"} iconSrc={tipData ? IconTip : ""} iconText={``}>
-        {tipData ? "가전인테리어 팁" : "xxxxxxxxxx"}
-      </Title>
-      <TipContainer>
-        <TipArea>
-          <Swiper spaceBetween={10} pagination={true} modules={[Pagination]} className={isData && isData.length > 1 ? "pageable" : ""}>
-            {!isData && tempData.map((data, idx) => 
-              <SwiperSlide key={idx}>
-                <div className="box img-box">
-                  <StyledButton href=""><TipImg src={imgTemp} alt="" /></StyledButton>
-                </div>
-              </SwiperSlide>
-            )}
-            {isData && isData.map((slideItem, slideIndex) => {
-              return (
-                <SwiperSlide className="swiperBox" key={`tip_${slideIndex}`}>
-                  {slideItem.map((boxItem, boxIndex) => {
-                    return (
-                      <StyledButton href={boxItem.contentUrl} key={`reviewBox_${boxIndex}`}>
-                        <TipImg src={boxItem.thumbnail} alt={boxItem.caption}/>
-                      </StyledButton>
-                    )
-                  })}
-                </SwiperSlide>
-              )
-            })}
-          </Swiper>
-        </TipArea>
-      </TipContainer>
-    </Section>
+  return (
+    <>
+      {tipData?.length !== 0 && (
+        <Section>
+          <Title className={tipData ? "" : "title-box"} iconSrc={tipData ? IconTip : ""} iconText={``}>
+            {tipData ? "생활 속의 한 컷" : "xxxxxxxxxx"}
+          </Title>
+          <TipContainer>
+            <TipArea>
+              <Swiper spaceBetween={10} pagination={true} modules={[Pagination]} className={isData && isData.length > 1 ? "pageable" : ""}>
+                {!isData && tempData.map((data, idx) => 
+                  <SwiperSlide key={idx}>
+                    <div className="box img-box">
+                      <StyledButton href=""><TipImg src={imgTemp} alt="" /></StyledButton>
+                    </div>
+                  </SwiperSlide>
+                )}
+                {isData && isData.map((slideItem, slideIndex) => {
+                  return (
+                    <SwiperSlide className="swiperBox" key={`tip_${slideIndex}`}>
+                      {slideItem.map((boxItem, boxIndex) => {
+                        return (
+                          <StyledButton href={boxItem.contentUrl} key={`reviewBox_${boxIndex}`}>
+                            <TipImg src={boxItem.thumbnail} alt={boxItem.caption}/>
+                          </StyledButton>
+                        )
+                      })}
+                    </SwiperSlide>
+                  )
+                })}
+              </Swiper>
+            </TipArea>
+          </TipContainer>
+        </Section>
+      )}
+    </>
   );
 }
 

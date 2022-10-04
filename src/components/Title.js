@@ -46,6 +46,7 @@ const Icon = styled.span`
   margin-right: 4px;
   img {
       width: 100%;
+      vertical-align: top;
   }
 `;
 

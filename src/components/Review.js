@@ -48,18 +48,28 @@ const ReviewArea = styled.div`
 
 const ReviewAreaDiv = styled.div`
   position: relative;
+  display: flex;
+  padding-top: 22.45%;
   flex-basis: 23%;
-  flex-direction: row;
-  border-radius: 10px;
-  overflow: hidden;
   margin-right: 16px;
-  padding-top: 23%;
 `;
 
 const ReviewContent = styled.div`
   display: flex;
   flex-direction: column;
   flex-basis: 74.3%;
+  align-self: flex-start;
+`;
+
+const ThumnailBox = styled.div`
+  display: flex;
+  align-self: flex-start;
+  position: absolute;
+  top: 0;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
 `;
 
 const ReviewImg = styled.img`
@@ -67,16 +77,8 @@ const ReviewImg = styled.img`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(1.5);
-  width: 100%;
-  height: auto;
-  &.fitW {
-    width: 100%;
-    height: auto;
-  }
-  &.fitH {
-    width: auto;
-    height: 100%;
-  }
+  width: auto;
+  height: 100%;
 `;
 
 const ReviewText = styled.div`
@@ -107,11 +109,13 @@ const Reviewer = styled.div`
 `;
 
 const StyledButton = styled(Button)`
-  justify-content: flex-start;
-  overflow: hidden;
+  position: relative;
   display: flex;
   flex: 1;
-  flex-direaction: row;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0;
 `;
 
 const division = (arg, num) => {
@@ -139,69 +143,62 @@ const Review = ({ reviewData }) => {
   const [loaded, setLoaded] = useState(false);
   const refImg = useRef([]);
 
-  // useEffect(() => {
-  //   if (loaded) {
-  //     refImg.current.map((imgItem, imgIndex) => {
-  //       refImg.current[imgIndex].map((thumItem, thumIndex) => {
-  //         let boxW = thumItem.parentElement.getBoundingClientRect().width;
-  //         let thumW = refImg.current[imgIndex][thumIndex].width;
-  //         let thumH = refImg.current[imgIndex][thumIndex].height;
-  //       })
-  //     })
-      
-  //   }
-  // }, [loaded]);
-
   return (
-    <Section space={false}>
-      <Title className={reviewData ? "" : "title-box"} iconSrc={reviewData ? IconReview : ""} iconText={``}>
-        {reviewData ? "꼼꼼 리뷰" : "xxxxxxxxxx"}
-      </Title>
-      <RevAll>
-        <Swiper spaceBetween={10} pagination={true} modules={[Pagination]} className={isData && isData.length > 1 ? "pageable" : ""}>
-          {!isData && tempData.map((data, idx) => 
-            <ReviewArea key={idx}>
-              <StyledButton href="">
-                <ReviewAreaDiv className="img-box">
-                  <ReviewImg src={imgTemp} alt=""/>
-                </ReviewAreaDiv>
-                <ReviewContent>
-                  <ReviewText className="text-box">xxxxxxxxxxxxxx</ReviewText>
-                  <Reviewer className="text-box">xxxxxxxxxxx</Reviewer>
-                </ReviewContent>
-              </StyledButton>
-            </ReviewArea>
-          )}
-          {isData && isData.map((slideItem, slideIndex) => { 
-            refImg.current[slideIndex] = [];
-            return (
-              <SwiperSlide className="swiperBox" key={`review_${slideIndex}`}>
-                {slideItem.map((boxItem, boxIndex) => {
-                  return (
-                    <ReviewArea key={`reviewBox_${boxIndex}`}>
-                      <StyledButton href={boxItem.contentUrl}>
-                        <ReviewAreaDiv>
-                          <ReviewImg
-                            src={boxItem.thumbnail}
-                            alt={``}
-                            ref={(el) => (refImg.current[slideIndex][boxIndex] = el)}
-                            onLoad={() => setLoaded(true)}
-                          />
-                        </ReviewAreaDiv>
-                        <ReviewContent>
-                          <ReviewText>{boxItem.contentTitle}</ReviewText>
-                          <Reviewer>{boxItem.bloggerName}</Reviewer>
-                        </ReviewContent>
-                      </StyledButton>
-                    </ReviewArea>
-                  )
-                })}
-              </SwiperSlide>
-            )
-          })}
-        </Swiper>
-      </RevAll>
-    </Section>
+    <>
+      {reviewData?.length !== 0 && (
+        <Section space={false}>
+          <Title className={reviewData ? "" : "title-box"} iconSrc={reviewData ? IconReview : ""} iconText={``}>
+            {reviewData ? "꼼꼼 리뷰" : "xxxxxxxxxx"}
+          </Title>
+          <RevAll>
+            <Swiper spaceBetween={10} pagination={true} modules={[Pagination]} className={isData && isData.length > 1 ? "pageable" : ""}>
+              {!isData && tempData.map((data, idx) => 
+                <ReviewArea key={idx}>
+                  <StyledButton href="">
+                    <ReviewAreaDiv className="img-box">
+                      <ReviewImg src={imgTemp} alt=""/>
+                    </ReviewAreaDiv>
+                    <ReviewContent>
+                      <ReviewText className="text-box">xxxxxxxxxxxxxx</ReviewText>
+                      <Reviewer className="text-box">xxxxxxxxxxx</Reviewer>
+                    </ReviewContent>
+                  </StyledButton>
+                </ReviewArea>
+              )}
+              {isData && isData.map((slideItem, slideIndex) => { 
+                refImg.current[slideIndex] = [];
+                return (
+                  <SwiperSlide className="swiperBox" key={`review_${slideIndex}`}>
+                    {slideItem.map((boxItem, boxIndex) => {
+                      return (
+                        <ReviewArea key={`reviewBox_${boxIndex}`}>
+                          <StyledButton href={boxItem.contentUrl}>
+                            <ReviewAreaDiv>
+                              <ThumnailBox>
+                                <ReviewImg
+                                  src={boxItem.thumbnail}
+                                  alt={``}
+                                  ref={(el) => (refImg.current[slideIndex][boxIndex] = el)}
+                                  onLoad={() => setLoaded(true)}
+                                />
+                              </ThumnailBox>
+                            </ReviewAreaDiv>
+                            <ReviewContent>
+                              <ReviewText>{boxItem.contentTitle}</ReviewText>
+                              <Reviewer>{boxItem.bloggerName}</Reviewer>
+                            </ReviewContent>
+                          </StyledButton>
+                        </ReviewArea>
+                      )
+                    })}
+                  </SwiperSlide>
+                )
+              })}
+            </Swiper>
+          </RevAll>
+        </Section>
+      )}
+    </>
   );
 }
 

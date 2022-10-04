@@ -1,6 +1,9 @@
 import React from "react";
 import styled from "styled-components";
+import Lottie from "components/lottie/Lottie";
 import bannerBG from "images/banner_bg.png";
+import SuggestionLottie from "components/lottie/Onboard_Suggestion_motion.json";
+import TeaserLottie from "components/lottie/Onboard_TeaserPopup_motion.json";
 
 const bannerTemp = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANcAAADXCAMAAAC+ozSHAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6RTc1MEU0MUQyRTY2MTFFREIwMjhBMTRCMUU2NjY2QkUiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6RTc1MEU0MUUyRTY2MTFFREIwMjhBMTRCMUU2NjY2QkUiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpFNzUwRTQxQjJFNjYxMUVEQjAyOEExNEIxRTY2NjZCRSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpFNzUwRTQxQzJFNjYxMUVEQjAyOEExNEIxRTY2NjZCRSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PsL8TV4AAAAGUExURf///wAAAFXC034AAAABdFJOUwBA5thmAAAAR0lEQVR42uzBAQEAAACCIP+vbkhAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA7yaAAAMAtWgAARlggcUAAAAASUVORK5CYII=';
 
@@ -14,6 +17,14 @@ const BannerContainer = styled.div`
     max-height: 300px;
     text-align: right;
   }
+`;
+
+const BannerBox = styled.div`
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
 `;
 
 const Img = styled.img`
@@ -55,24 +66,33 @@ const Sub = styled.div`
 조건이 false라면 React는 무시하고 건너뜁니다.
 
  */
-const Banner = ({ bannerData }) => {
+const Banner = ({ 
+  bannerData,
+  productName,
+}) => {
   return(
     <BannerContainer className={bannerData ? "" : "banner-box"}>
       <Img src={bannerData ? bannerBG : bannerTemp} alt={`배경 이미지`}/>
-      <BannerText>
+      {bannerData && (
+        <BannerBox>
+          <Lottie src={TeaserLottie} size="100%" />
+        </BannerBox>
+      )}
+      <BannerText tabIndex="0">
         <Main>
-          {bannerData && bannerData.bannerText.split('<br />').map(( line, id ) => {
-            line=line.trimStart();
-            return (
-                <span key={`banner_${id}`}>{line}<br /></span>
-              )
-            })
-          }
+          {bannerData && (
+            <>
+              <span>당신이 알아야 할</span><br/>
+              <span>'{productName} 사용팁'</span>
+            </>
+          )}
           {!bannerData && (
-            <span></span>
+            <>
+              <span className="text-box">xxxxxxxx</span><br/>
+              <span className="text-box">xxxxx xxxxx</span>
+            </>
           )}
         </Main>
-        <Sub className={bannerData ? "" : "banner-text"}>{bannerData ? "미리 살펴볼까요?" : "xxxxxxxxxxxx"}</Sub>
       </BannerText>
     </BannerContainer>
   )

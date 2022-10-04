@@ -98,9 +98,10 @@ const Ripple = ({ children, noRipple }) => {
           ...rippleEventBinder(children.props),
           children: [
             <StyledRippleOutSide
+              key={"ripple_outside"}
               aria-hidden={true}
               className={noRipple !== true && isRippledStart === false && isRippledEnd === true ? "action" : "stop"}>
-              <StyledRippleEffectInside/>
+              <StyledRippleEffectInside key={"ripple_inside"} />
             </StyledRippleOutSide>,
             children.props.children,
           ]

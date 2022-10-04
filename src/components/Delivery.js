@@ -16,7 +16,7 @@ const progressWidth = ({ step }) => {
     case 1:
       return `width: 36%`;
     case 2:
-      return `width: 69%`;
+      return `width: 66%`;
     case 3:
       return `width: 100%`;
     default:
@@ -27,15 +27,14 @@ const progressWidth = ({ step }) => {
 const DeliveryContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
   padding: 15px 0 32px;
   background: ${({ theme }) => theme.colorSet.background_material_light};
 `;
 
 const StepText = styled.span`
-  display: inline-block;
-  padding-top: 5px;
+  display: flex;
+  padding-top: 15px;
   color: ${({ theme }) => theme.colorSet.color_control_normal_ui};
   ${({ theme }) => theme.fontSet.Type_A06};
   font-weight: ${({ theme }) => theme.fontWeight.Regular};
@@ -49,10 +48,10 @@ const StepText = styled.span`
 `;
 
 const StepIcon = styled.div`
-  position: relative;
+  position: absolute;
   width: 16px;
   height: 16px;
-  margin-top: -4px;
+  margin-top: -24px;
   box-sizing: border-box;
   border-radius: 50%;
   border: 2px solid ${({ theme }) => theme.colorSet.color_control_normal_ui_v};
@@ -68,6 +67,7 @@ const StepIcon = styled.div`
   .now & {
     width: 48px;
     height: 48px;
+    margin-top: -40px;
     border: none;
     background: none;
     &:after,
@@ -122,11 +122,11 @@ const StepImg = styled.img`
 const StepBox = styled.div`
   position:relative;
   display:flex;
+  flex: 1;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
   &.now {
-    margin-top: -14px;
     img {
       display: block;
     }
@@ -135,6 +135,8 @@ const StepBox = styled.div`
 
 const StepInfo = styled.div`
   position: relative;
+  display: flex;
+  flex-direction: column;
   margin-bottom: 18px;
 `;
 
@@ -146,21 +148,28 @@ const StepDesc = styled.span`
   &.hide {
     display: none;
   }
-`;
-
-const StepDate = styled.span`
-  display: inline-block;
-  margin-right: 4px;
-  color: ${({ theme }) => theme.colorSet.color_text_accent_ui};
+  .date-msg {
+    ${({ theme }) => theme.fontSet.Type_A08};
+    font-weight: ${({ theme }) => theme.fontWeight.Regular};
+    color: ${({ theme }) => theme.colorSet.primary_text_default_material_light};
+    em{
+      display: inline-block;
+      margin-right: 4px;
+      ${({ theme }) => theme.fontSet.Type_A08};
+      font-style: normal;
+      font-weight: ${({ theme }) => theme.fontWeight.Regular};
+      color: ${({ theme }) => theme.colorSet.color_text_accent_ui};
+    }
+  }
 `;
 
 const StepBadge = styled.span`
   display: inline-block;
-  width: 18px;
-  height: 18px;
+  width: 6%;
+  max-width: 16px;
+  height: 100%;
+  padding: 3px 0;
   margin-left: 3px;
-  margin-top: 1px;
-  vertical-align: top;
   background: url(${OrderNew}) no-repeat center center;
   background-size: 100%;
 `;
@@ -169,8 +178,8 @@ const StepDash = styled.div`
   overflow: hidden;
   position: absolute;
   top: 22px;
-  left: 20px;
-  right: 20px;
+  left: 12%;
+  right: 12%;
   height: 2px;
   z-index: 0;
   background: ${({ theme }) => theme.colorSet.color_control_normal_ui_v};
@@ -198,8 +207,7 @@ const StepArea = styled.div`
   display: flex;
   flex: 1;
   flex-direction: row;
-  justify-content: space-between;
-  padding-top: 14px;
+  padding-top: 34px;
 `;
 
 const DeliveryStepArea = styled.div`
@@ -224,7 +232,10 @@ const getStep = (status) => {
     case 'ordered':
       stepCount = 0;
       break;
-    case 'prepareDeliver':
+    case 'prepareDelivery':
+    case 'postponedAcquisition':
+    case 'postponedProduction':
+    case 'postponedDelivery':
       stepCount = 1;
       break;
     case 'deliverying':
@@ -251,27 +262,30 @@ const getDeliveryMsg = (estimatedDeliveryDate, DeliveryStep) => {
   const remainingDay = Math.floor((estimatedDate - today) / 1000 / 60 / 60 / 24);
   switch(DeliveryStep) {
     case 'ordered':
-      return `${mm}/${dd}(${day}) 도착 예정`;
+      return `<em>${mm}/${dd}(${day})</em> 도착 예정`;
     case 'prepareDelivery':
-      return `${mm}/${dd}(${day}) 도착 예정`;
+    case 'postponedAcquisition':
+    case 'postponedProduction':
+    case 'postponedDelivery':
+      return `<em>${mm}/${dd}(${day})</em> 도착 예정`;
     case 'deliverying':
       if (remainingDay > 1) {
-        return `(도착 ${remainingDay}일 전) ${mm}/${dd}(${day}) 도착 예정`;
+        return `<em>(도착 ${remainingDay}일 전) ${mm}/${dd}(${day})</em> 도착 예정`;
       } else {
         if (estimatedDate.getDate() === today.getDate()) {
-          return `(도착 당일) 오늘(${day}) 도착 예정`;
+          return `<em>(도착 당일) 오늘(${day})</em> 도착 예정`;
         } else {
-          return `(도착 1일 전) 내일(${day}) 도착 예정`;
+          return `<em>(도착 1일 전) 내일(${day})</em> 도착 예정`;
         }
       }
     case 'completeDelivery':
       if (remainingDay < 1) {
-        return `(도착 ${Math.abs(remainingDay)}일 후) ${mm}/${dd}(${day}) 도착`;
+        return `<em>(도착 ${Math.abs(remainingDay)}일 후) ${mm}/${dd}(${day})</em> 도착`;
       } else {
         if (estimatedDate.getDate() === today.getDate()) {
-          return `(도착 당일) 오늘(${day}) 도착`;
+          return `<em>(도착 당일) 오늘(${day})</em> 도착`;
         } else {
-          return `(도착 1일 후) 어제(${day}) 도착`;
+          return `<em>(도착 1일 후) 어제(${day})</em> 도착`;
         }
       }
     default:
@@ -279,70 +293,76 @@ const getDeliveryMsg = (estimatedDeliveryDate, DeliveryStep) => {
   }
 }
 
-const Delivery = ({ deliveryData }) => {
+const Delivery = ({
+  deliveryData,
+  estimatiedDate,
+}) => {
   // console.log(deliveryData.url);
   const [deliveryStep, setDeliveryStep] = useState(0);
   useEffect(() => {
     console.log(deliveryData);
     if (deliveryData) {
       setDeliveryStep(getStep(deliveryData.status));
+      console.log(getDeliveryMsg(estimatiedDate, deliveryData.status));
     }
   }, [deliveryData]);
   return (
     <>
-      <Section space={false}>
-        <Title className={deliveryData ? "" : "title-box"} link={deliveryData ? deliveryData.url : 'https://naver.com'} iconSrc={deliveryData ? IconDelivery : ""} iconText={``}>
-          {deliveryData ? "주문 현황" : "xxxxxxxxxx"}
-        </Title>
-        <DeliveryContainer>
-          {!deliveryData && (
-            <DeliveryStepArea>
-              <StepInfo>
-                <StepDate className="text-box">xxxxxxxxx</StepDate>
-                <StepDesc className="text-box">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</StepDesc>
-              </StepInfo>
-              <StepBar className="img-box">
-                <img src={imgTemp} alt="배송정보"/>
-              </StepBar>
-            </DeliveryStepArea>
-          )}
-          {deliveryData && (
-            <DeliveryStepArea>
-              {typeof deliveryStep === 'number' &&
+      {(deliveryData?.constructor !== Object || (deliveryData?.status && deliveryData?.status !== 'canceledOrder')) && (
+        <Section space={false}>
+          <Title className={deliveryData ? "" : "title-box"} link={deliveryData ? deliveryData.url.split('||')[0] : 'https://naver.com'} iconSrc={deliveryData ? IconDelivery : ""} iconText={``}>
+            {deliveryData ? "주문 현황" : "xxxxxxxxxx"}
+          </Title>
+          <DeliveryContainer>
+            {!deliveryData && (
+              <DeliveryStepArea>
                 <StepInfo>
-                  <StepDate>8/25(수)</StepDate>
-                  <StepDesc>{deliveryData.message}</StepDesc>
-                  <StepBadge><span className="hidden-inline">NEW</span></StepBadge>
-                </StepInfo>}
-              {typeof deliveryStep !== 'number' && <StepDesc>주문이 취소되었어요.</StepDesc>}
-              <StepBar>
-                <StepArea>
+                  <StepDesc className="text-box">xxxxxxxxxxxxxxxxxxx</StepDesc>
+                </StepInfo>
+                <StepBar className="img-box">
+                  <img src={imgTemp} alt="배송정보"/>
+                </StepBar>
+              </DeliveryStepArea>
+            )}
+            {deliveryData && (
+              <DeliveryStepArea>
+                {typeof deliveryStep === 'number' &&
+                  <StepInfo>
+                    <StepDesc>
+                      <span className="date-msg" dangerouslySetInnerHTML={{__html: getDeliveryMsg(estimatiedDate, deliveryData.status)}}></span>
+                      <StepBadge><span className="hidden-inline">NEW</span></StepBadge>
+                    </StepDesc>
+                  </StepInfo>}
+                {typeof deliveryStep !== 'number' && <StepDesc>주문이 취소되었어요.</StepDesc>}
+                <StepBar>
                   <StepDash>
                     {
                       <StepProgress step={deliveryStep}></StepProgress>
                     }
                   </StepDash>
-                  {
-                    deliveryLabel.map(( item, id ) => {
-                      const done = id < deliveryStep;
-                      const now = id === deliveryStep;
-                      return (
-                        <StepBox key={`delivery_step_${id}`} className={`${now ? "now" : ""} ${done ? "done" : ""}`}>
-                          <StepIcon><StepImg src={deliveryImg[deliveryStep]} alt="" aria-hidden={true} /></StepIcon>
-                          <StepText tabIndex={0} role="text">
-                            {now && <span className="hidden-inline">현재 상태 </span>}
-                            {item}
-                          </StepText>
-                        </StepBox>
-                      )
-                    })
-                  }
-                </StepArea>
-              </StepBar>
-            </DeliveryStepArea>
-          )}
-        </DeliveryContainer>
-      </Section>
+                  <StepArea>
+                    {
+                      deliveryLabel.map(( item, id ) => {
+                        const done = id < deliveryStep;
+                        const now = id === deliveryStep;
+                        return (
+                          <StepBox key={`delivery_step_${id}`} className={`step-box ${now ? "now" : ""} ${done ? "done" : ""}`}>
+                            <StepIcon className="step-icon"><StepImg src={deliveryImg[deliveryStep]} alt="" aria-hidden={true} /></StepIcon>
+                            <StepText className="step-text" tabIndex={0} role="text">
+                              {now && <span className="hidden-inline">현재 상태 </span>}
+                              {item}
+                            </StepText>
+                          </StepBox>
+                        )
+                      })
+                    }
+                  </StepArea>
+                </StepBar>
+              </DeliveryStepArea>
+            )}
+          </DeliveryContainer>
+        </Section>
+      )}
     </>
   );
 }

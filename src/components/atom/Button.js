@@ -35,9 +35,11 @@ const Button = ({ type, href, text, children, onClick, onTouchStart, onTouchEnd,
     <Ripple noRipple={href ? false : onClick ? false : true}>
       <ButtonStyled
         as={href ? "a" : onClick ? "button" : "span"}
+        role={href ? "link" : onClick ? "button" : "none"}
         type={type ? type : ""}
         className={type}
         href={href}
+        tabIndex={href || onClick ? "0" : ""}
         onClick={(e) => {
           e.stopPropagation();
           onClick && onClick();

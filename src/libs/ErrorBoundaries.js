@@ -1,9 +1,6 @@
 import React from "react";
-import ErrorPage from "../components/ErrorPage";
-
 
 class ErrorBoundary extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = { hasError: false };
@@ -25,7 +22,7 @@ class ErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError) {
       // 폴백 UI를 커스텀하여 렌더링할 수 있습니다.
-      return <ErrorPage/>
+      return <div>Error</div>
     }
 
     return this.props.children;

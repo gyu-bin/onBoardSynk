@@ -9,8 +9,8 @@ import IconPlay from "images/btn_contents_play.png";
 import Button from "components/atom/Button";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import Portal from 'components/Portal';
-import BottomSheet from 'components/BottomSheet';
+import Portal from "components/Portal";
+import BottomSheet from "components/BottomSheet";
 
 const imgTemp = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABAsAAAJXCAMAAADCeC0zAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6RjRBNjJENzgyRTY2MTFFRDkyRDJDQjI4N0VCNzI0MTMiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6RjRBNjJENzkyRTY2MTFFRDkyRDJDQjI4N0VCNzI0MTMiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpGNEE2MkQ3NjJFNjYxMUVEOTJEMkNCMjg3RUI3MjQxMyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpGNEE2MkQ3NzJFNjYxMUVEOTJEMkNCMjg3RUI3MjQxMyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PmwiqqQAAAAGUExURf///wAAAFXC034AAAABdFJOUwBA5thmAAACc0lEQVR42uzBMQEAAADCoPVPbQlPoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB4mQADAHibAAH8kTxoAAAAAElFTkSuQmCC';
 
@@ -57,17 +57,17 @@ const InfoProduct = styled.div`
   flex: 1;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   margin-top: 12px;
   font-size: 0;
 `;
 
 const InfoThumnail = styled.div`
   position: relative;
-  overflow: hidden;
-  flex-basis: 23%;
+  display: flex;
   padding-top: 23%;
+  flex-basis: 23%;
   margin-right: 16px;
-  border-radius: 10px;
 `;
 
 const InfoThumnailImg = styled.img`
@@ -76,6 +76,17 @@ const InfoThumnailImg = styled.img`
   left: 50%;
   transform: translate(-50%, -50%) scale(1.1);
   height: 100%;
+`;
+
+const ThumnailBox = styled.div`
+  display: flex;
+  align-self: flex-start;
+  position: absolute;
+  top: 0;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
 `;
 
 const InfoDesc = styled.div`
@@ -167,6 +178,7 @@ const ListTitle = styled.p`
 `;
 const ProductInfo = ({ 
   productData,
+  productName,
 }) => {
   const [guideUrl, setGuideUrl] = useState();
   //console.log(productData);
@@ -190,7 +202,9 @@ const ProductInfo = ({
             <>
               <InfoProduct>
                 <InfoThumnail>
-                  <InfoThumnailImg className="img-box" src={imgTemp2} alt="제품 이미지" />
+                  <ThumnailBox>
+                    <InfoThumnailImg className="img-box" src={imgTemp2} alt="제품 이미지" />
+                  </ThumnailBox>
                 </InfoThumnail>
                 <InfoDesc>
                   <InfoProductName className="text-box">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</InfoProductName>
@@ -203,11 +217,13 @@ const ProductInfo = ({
             <>
               <InfoProduct>
                 <InfoThumnail>
-                  <InfoThumnailImg src={productData.modelThumbnail} alt={productData.productName}/>
+                  <ThumnailBox>
+                    <InfoThumnailImg src={productData.modelThumbnail} alt={productData.productName}/>
+                  </ThumnailBox>
                 </InfoThumnail>
                 <InfoDesc>
-                  <InfoProductName>{productData.productName}</InfoProductName>
-                  <InfoModelName>{productData.modelName}</InfoModelName>
+                  <InfoProductName>{productName}</InfoProductName>
+                  <InfoModelName>{productData.productName}</InfoModelName>
                 </InfoDesc>
               </InfoProduct>
               <InfoSupport>

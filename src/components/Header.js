@@ -1,6 +1,6 @@
 import Button from "components/atom/Button";
 import IconBack from "images/icon_back.png";
-import IconShare from 'images/btn_action_share_material_nor.png';
+import IconShare from "images/btn_action_share_material_nor.png";
 import styled from "styled-components";
 
 const HeaderContainer = styled.div`
@@ -18,9 +18,15 @@ const HeaderContainer = styled.div`
 `;
 
 const TitleBox = styled.h1`
-  display: flex;
+  overflow: hidden;
+  display: -webkit-box;
   flex: 1;
   margin-left: 5px;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow-wrap: break-word;
+  text-overflow: ellipsis;
+  font-size: 13px;
   ${({ theme }) => theme.fontSet.Type_A12};
   font-weight: ${({ theme }) => theme.fontWeight.Bold};
 `;
@@ -54,17 +60,24 @@ const BtnIconShare = styled.span`
 `;
 
 
-const Header = ({ headerData }) => {
-
+const Header = ({ 
+  headerData,
+  productName,
+  shareUrl,
+}) => {
   return (
     <HeaderContainer>
-      <StyledButtonBack aria-label="뒤로가기" className={headerData ? "" : "button-box"}
-        onClick={() => {
+      <StyledButtonBack aria-label="뒤로가기" onClick={() => {
           window.NativeInterface.closeView();
         }}>
         <BtnIconBack />
       </StyledButtonBack>
-      <TitleBox className={headerData ? "" : "text-box"}>{headerData ? headerData : "xxxxxxxxxxx"}</TitleBox>
+      <TitleBox className={headerData ? "" : "text-box"}>{headerData ? `${productName} 온보딩` : "xxxxxxxx"}</TitleBox>
+      <StyledButtonShare aria-label="공유하기" onClick={()=>{
+        window.NativeInterface.shareLink(shareUrl);
+      }}>
+        <BtnIconShare />
+      </StyledButtonShare>
     </HeaderContainer>
 );
 }

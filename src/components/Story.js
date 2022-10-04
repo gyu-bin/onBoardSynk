@@ -100,11 +100,14 @@ const ListItems = styled.div`
   box-sizing: border-box;
 `;
 
-const Story = ({ storyData }) => {
+const Story = ({ 
+  storyData,
+  productName,
+}) => {
   return(
     <Section style={{ paddingBottom: "25px" }}>
       <Title className={storyData ? "" : "title-box"} iconSrc={storyData ? IconStory : ""} iconText={``}>
-        {storyData ? "에어로타워 스토리" : "xxxxxxxxxx"}
+        {storyData ? `${productName} 스토리` : "xxxxxxxxxx"}
       </Title>
       <StoryContainer className={storyData && storyData.length > 1 ? "" : "full"}>
         <Swiper spaceBetween={10} slidesPerView={"auto"} loop={storyData && storyData.length > 1 ? true : false}>

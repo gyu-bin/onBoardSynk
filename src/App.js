@@ -1,5 +1,4 @@
 import "App.css";
-import axios from "axios";
 import Banner from "components/Banner";
 import Delivery from "components/Delivery";
 import Exp from "components/Experience";
@@ -11,24 +10,16 @@ import { defaultTheme } from "components/theme/default";
 import iosTheme from "components/theme/iosTheme";
 import Tip from "components/Tip";
 import { ErrorBoundary } from "libs/ErrorBoundaries";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styled, { ThemeProvider } from "styled-components";
 
-import Portal from 'components/Portal';
-import ErrorPage from "./components/ErrorPage";
+import Modal from "components/Modal";
+import Portal from "components/Portal";
 
 const ViewWrap = styled.div`
   position: relative;
   padding-bottom: 40px;
   border-top: 56px solid transparent;
-`;
-const Share = styled.div`
-  position:fixed;
-  right:10px;
-  bottom:10px;
-  width:30px;
-  height:30px;
-  pointer-events:none;
 `;
 const checkMobile = () => {
   //device 체크
@@ -90,57 +81,21 @@ const set10DayBefore = () => {
 const App = () => {
   const [data, setData] = useState([]);
   const [delivery, setDelivery] = useState();
-  const [firebaseApiKey, setFirebaseApiKey] = useState('VGhpblEyLjAgU0VSVklDRQ==');
-
-  const [NetErrOn, setNetErrOn]=useState(false);
-  const showNetSheet=(show)=>{
-    setNetErrOn(show)
-  }
-
-  const share = useCallback(() => {
-    // //deepLink
-    // const baseUrl = `https://lgthinq.page.link/?link=https://lgthinq.lge.com/thinqapp/care?state=CDM_Detail`;
-    // const params = `&params=${contentId}`;    
-    // const property = `&apn=com.lgeha.nuts&isi=993504342&ibi=com.lgeha.nuts&amv=40000011&imv=4.0.1000`;  
-    // const convertTitle = shareTitle.replace(/<br>/gi, " ");     
-    // // si(image), st(title), sd(description) 
-    // const socialMetaTag = `&si=${shareThumbnail}&st=${convertTitle}`;
-    // const deepLinkUrl = baseUrl + encodeURIComponent(params) + property + socialMetaTag;
-    return axios({
-      method: "POST",
-      url: `https://firebasedynamiclinks.googleapis.com/v1/shortLinks?key=${firebaseApiKey}`,
-      headers: {
-        "Content-type": "application/json", 
-      }, 
-      params: {
-        longDynamicLink: '',//longLink,
-      },
-    })
-    .then((res) => { 
-      console.log(res);
-      window.navigator.share({
-        title: 'share', // 공유될 제목
-        text: 'share', //`${t("@CP_CARE_SMARTLIFE_CONTENTS_SHARE_TITLE_S")}`, // 공유될 설명
-        url: 'https://www.naver.com', // 공유될 URL
-        //files: [], // 공유할 파일 배열
-      });
-      //resolve(res.data);   
-    }).then((data)=>data)
-      .then((data)=>console.log(data))
-    .catch((error) => {  
-      //reject(error);  
-    });
-  }, [firebaseApiKey]);
+  const [shareUrl, setShareUrl] = useState('');
+  const [deliveryShow, setDeliverShow] = useState(true);
+  const [estimatiedDate, setEstimatiedDate] = useState('');
+  const [netErrOn, setNetErrOn] = useState(false);
+  const [deliveryError, setDeliveryError] = useState(false);
 
   useEffect(() => {
     getAuthInfo().then((authInfo) => {
-      setFirebaseApiKey(authInfo.firebaseApiKey);
       const windowURL = new URL(window.location.href),
         orderNo = windowURL.searchParams.get("orderNo");//주문번호
+      //console.log(orderNo, orderNo !== 'null' && orderNo !== 'undefined');
+      setDeliverShow(orderNo !== 'null' && orderNo !== 'undefined');
       const mbrNo = authInfo.headers['x-user-no'];//주문자
-      //mrbNo KR2107146190022
-      //orderNo null
-
+      const linkUrl = `https://lgthinq.lge.com/thinqapp/onboard?salesModelName=${authInfo.modelName}`;
+      setShareUrl(`https://lgthinq.page.link/?link=${encodeURIComponent(linkUrl)}&apn=com.lgeha.nuts&isi=993504342&ibi=com.lgeha.nuts&efr=1`);
       fetch(
         `${authInfo.url}/css/contents/content?type=onboard&keyword=${authInfo.modelName}&searchOption=tag`,
         {
@@ -160,9 +115,10 @@ const App = () => {
             setData(data);
             console.log(data); //json 데이터들
           }).catch((error) => console.log("error:", error));
+      }).catch(() => {
+        setNetErrOn(true);
       });
-  
-      // authInfo.url + `/css/deliverry/?from=${set10DayBefore()}&mbrNo=${mbrNo}&orderNo=${orderNo}`,
+
       fetch(
         `${authInfo.url}/css/delivery/?from=${set10DayBefore()}&mbrNo=${mbrNo}`,
         {
@@ -172,44 +128,57 @@ const App = () => {
           creadentials: 'same-origin',
           cache: "force-cache",
         }
-      ).then(res => res.json())
-        .then((data) => (data))
-        .then((data) => {
-          const orderData = data.result.messages.filter((data) => {
-            if (data.orders[0].salesModelName === authInfo.modelName && data.orders[0].orderNo === orderNo) {
-              return data;
+      )
+      .then(res => res.json())
+      .then((data) => (data))
+      .then((data) => {
+        let orderData = [];
+        console.log(data);
+        data.result.messages.forEach((data) => {
+          data.orders.forEach((dataProduct, idx) => {
+            if (dataProduct.salesModelName === authInfo.modelName && dataProduct.orderNo === orderNo) {
+              orderData.push(data);
+              setEstimatiedDate(dataProduct.estimatedDeliveryDate);
             }
           });
-          const orderList = ['completeDelivery','deliverying','prepareDelivery','ordered'];
-          let firstOrder = null;
-          if (orderData.length > 1) {
-            let orders = [];
-            orderList.forEach((order) => {//주문 우선순위로 sorting
-              orderData.forEach((data) => {
-                if (data.status === order) {
-                  orders.push(data);
-                }
-              });
-            });
-            const order = orders.filter((data) => {
-              return data.status === orders[0].status;
-            })
-            order.sort((a,b) => {
-              if (new Date(a.statusAt) < new Date(b.statusAt)){
-                return 1;
-              } else if (new Date(a.statusAt) > new Date(b.statusAt)){
-                return -1;
-              } else if (new Date(a.statusAt) === new Date(b.statusAt)){
-                return 0;
+        });
+        //console.log(orderData);
+        const orderList = ['canceledOrder','completeDelivery','deliverying','prepareDelivery','postponedAcquisition','postponedProduction','postponedDelivery','ordered'];
+        let firstOrder = null;
+        if (orderData.length > 1) {
+          let orders = [];
+          orderList.forEach((order) => {//주문 우선순위로 sorting
+            orderData.forEach((data) => {
+              if (data.status === order) {
+                orders.push(data);
               }
             });
-            firstOrder = order[0];
-          } else {
-            firstOrder = orderData[0];
-          }
-          setDelivery(firstOrder);
-          console.log(firstOrder);
-        })
+          });
+          //console.log(orders);
+          const order = orders.filter((data) => {
+            return data.status === orders[0].status;
+          })
+          order.sort((a,b) => {
+            if (new Date(a.createAt) < new Date(b.createAt)){
+              return 1;
+            } else if (new Date(a.createAt) > new Date(b.createAt)){
+              return -1;
+            } else if (new Date(a.createAt) === new Date(b.createAt)){
+              return 0;
+            }
+          });
+          firstOrder = order[0];
+        } else {
+          firstOrder = orderData[0];
+        }
+        if (firstOrder === undefined) {
+          setDeliverShow(false);
+        }
+        setDelivery(firstOrder);
+        console.log(firstOrder);
+      }).catch(() => {
+        setDeliveryError(true);
+      });
     });
   }, []);
 
@@ -225,23 +194,24 @@ const App = () => {
       <ViewWrap className="App">
         <ErrorBoundary>
           {/* <ErrorPage /> */}
-          <Header headerData={data.title} />
-          <Banner bannerData={data.banner} />
-          <Delivery deliveryData={delivery} />
-          <ProductInfo productData={data.modelInfo} />
-          <Review reviewData={data.productReview} />
-          <Story storyData={data.LGcontent} />
-          <Tip tipData={data.instaContent} />
-          <Exp expData={data.youtube} />
-          <Share onClick={() => {
-            share();
-          }}/>
+          <Header headerData={!netErrOn ? data.title : undefined} productName={data.productCategoryName} shareUrl={shareUrl}/>
+          <Banner bannerData={!netErrOn ? data.banner : undefined} productName={data.productCategoryName} />
+          {!deliveryError && deliveryShow && (
+            <Delivery deliveryData={!netErrOn ? delivery : undefined} estimatiedDate={estimatiedDate}/>
+          )}
+          <ProductInfo productData={!netErrOn ? data.modelInfo : undefined} productName={data.productCategoryName} />
+          <Review reviewData={!netErrOn ? data.productReview : undefined} />
+          <Story storyData={!netErrOn ? data.LGcontent : undefined} productName={data.productCategoryName} />
+          <Tip tipData={!netErrOn ? data.instaContent : undefined} />
+          <Exp expData={!netErrOn ? data.youtube : undefined} />
         </ErrorBoundary>
       </ViewWrap>
-      <Portal showNetSheet={showNetSheet}>
-      {NetErrOn && (
-          <ErrorPage />
-      )}
+      <Portal>
+        {netErrOn && (
+          <Modal content={"네트워크 연결이 원활하지 않습니다.<br/>잠시 후 다시 시도해주세요."} closeAction={() => {
+            window.NativeInterface.closeView();
+          }}/>
+        )}
       </Portal>
     </ThemeProvider>
   );

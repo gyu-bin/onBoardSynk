@@ -20,11 +20,25 @@ const ExperienceContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0 20px;
+  .swiper-slide {
+    width: 90%;
+  }
+  &.full .swiper-slide {
+    width: 100%;
+  }
 `;
 
 const ListItems = styled.div`
   overflow: hidden;
   box-sizing: border-box;
+`;
+
+const ExpImgDiv = styled.div`
+  @media screen and (min-width: 600px) {
+    display: flex;
+    flex: 1;
+    margin-right: 10px;
+  }
 `;
 
 const ExpVideo = styled.div`
@@ -81,6 +95,10 @@ const StyledButton = styled(Button)`
   text-decoration: none;
   justify-content: flex-start;
   font-size: 0 !important;
+  @media screen and (min-width: 600px) {
+    display: flex;
+    flex-direction: row;
+  }
 `;
 
 const ExpInfo = styled.div`
@@ -90,49 +108,61 @@ const ExpInfo = styled.div`
   position: relative;
   box-sizing: border-box;
   text-align: left;
+  @media screen and (min-width: 600px) {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
 `;
 
 const Experience = ({ expData }) => {
   return(
-    <Section style={{ paddingBottom: "20px" }}>
-      <Title className={expData ? "" : "title-box"} iconSrc={expData ? IconExp : ""} iconText={``}>
-        {expData ? "생생체험기" : "xxxxxxxxxx"}
-      </Title>
-      <ExperienceContainer>
-        <Swiper spaceBetween={10} loop={expData && expData.length > 1 ? true : false}>
-          {!expData && tempDate.map((data, idx) => 
-            <SwiperSlide key={idx}>
-              <ListItems>
-                <StyledButton href="#none">
-                  <div className="img-box">
-                    <ExpImg src={imgTemp} alt=""/>
-                  </div>
-                  <ExpInfo>
-                    <ListTitle className="text-box">xxxxxxxxxx</ListTitle>
-                    <ListName className="text-box">xxxxxxxxxxxxxx</ListName>
-                  </ExpInfo>
-                </StyledButton>
-              </ListItems>
-            </SwiperSlide>
-          )}
-          {expData && expData.map(({ contentId, contentType, contentUrl, thumbnail,channelName, contentTitle, viewCount }) => (
-            <SwiperSlide key={`experience_${contentId}`}>
-              <ListItems>
-                <StyledButton href={contentUrl}>
-                  <ExpVideo>
-                    <ExpImg src={thumbnail} alt={'체험기 이미지'}/>
-                  </ExpVideo>
-                  <ExpInfo>
-                    <ListTitle>{contentTitle}</ListTitle>
-                    <ListName>{channelName}</ListName>
-                  </ExpInfo>
-                </StyledButton>
-              </ListItems>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-    </ExperienceContainer>
-  </Section>
+    <>
+      {expData?.length !== 0 && (
+        <Section style={{ paddingBottom: "20px" }}>
+          <Title className={expData ? "" : "title-box"} iconSrc={expData ? IconExp : ""} iconText={``}>
+            {expData ? "생생 체험기" : "xxxxxxxxxx"}
+          </Title>
+          <ExperienceContainer className={expData && expData.length > 1 ? "" : "full"}>
+            <Swiper spaceBetween={10} slidesPerView={"auto"} loop={expData && expData.length > 1 ? true : false}>
+              {!expData && tempDate.map((data, idx) => 
+                <SwiperSlide key={idx}>
+                  <ListItems>
+                    <StyledButton href="#none">
+                      <div className="img-box">
+                        <ExpImg src={imgTemp} alt=""/>
+                      </div>
+                      <ExpInfo>
+                        <ListTitle className="text-box">xxxxxxxxxx</ListTitle>
+                        <ListName className="text-box">xxxxxxxxxxxxxx</ListName>
+                      </ExpInfo>
+                    </StyledButton>
+                  </ListItems>
+                </SwiperSlide>
+              )}
+              {expData && expData.map(({ contentId, contentType, contentUrl, thumbnail,channelName, contentTitle, viewCount }) => (
+                <SwiperSlide key={`experience_${contentId}`}>
+                  <ListItems>
+                    <StyledButton href={contentUrl}>
+                      <ExpImgDiv>
+                        <ExpVideo>
+                          <ExpImg src={thumbnail} alt={'체험기 이미지'}/>
+                        </ExpVideo>
+                      </ExpImgDiv>
+                      <ExpInfo>
+                        <ListTitle>{contentTitle}</ListTitle>
+                        <ListName>{channelName}</ListName>
+                      </ExpInfo>
+                    </StyledButton>
+                  </ListItems>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </ExperienceContainer>
+        </Section>
+      )}
+    </>
   );
 }
 
